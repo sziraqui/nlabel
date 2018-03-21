@@ -3,7 +3,8 @@ var router = express.Router();
 
 /* GET images directory */
 router.get('/', (req, res, next) => {
-    res.render('index', {title:'Gallery'});
+    var data = require('../public/samples/dummy-data.js').setupData;
+    res.render('gallery',{"images":data});
 });
 
 module.exports = router;
