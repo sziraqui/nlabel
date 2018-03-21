@@ -1,2 +1,38 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Setup</li>
+  </ol>
+</nav>
+
+<form>
+
+  <label for="directorySelectInp">Get directory</label>
+  <div id="directorySelectInp"class="input-group mb-3">
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" id="inputGroupFile04">
+      <label class="custom-file-label" for="inputGroupFile04">Choose file</label><br>
+    </div>
+  </div>
+  <div class="input-group mb-3">
+       <small class="form-text text-muted">
+          The parent directory of the selected file will be scanned for images
+      </small>
+  </div>
+  
+  <label for="tagSelectInp">Set tags</label>
+  <div id="tagSelectInp"class="input-group mb-3">
+    <div class="input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text">List of Tags</span>
+  </div>
+    <textarea class="form-control" aria-label="With textarea"></textarea>
+  </div>
+  </div>
+  <div class="input-group mb-3">
+       <small class="form-text text-muted">
+          Enter comma separated tags that will be used as labels for selected images
+      </small>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
