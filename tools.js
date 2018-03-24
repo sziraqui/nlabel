@@ -53,6 +53,18 @@ function getSafeFileName(filename) {
 }
 
 
+function parseTagsNlabels(fileList, tagList) {
+    out = [];
+    for (var i in fileList) {
+        var filename = fileList[i];
+        var json = {'filename': String(filename), 'tags':tagList};
+        out.push(json);
+    }
+    return out;
+} 
+
+
 exports.getSafeFileName = getSafeFileName;
 exports.json2csv = json2csv;
 exports.writeCSV = writeCSV;
+exports.parseTagsNlabels = parseTagsNlabels;
