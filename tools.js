@@ -23,19 +23,19 @@ function json2csv(tags, labels) {
 }
 
 
-function writeCSV(filename, data) {
+function writeCSV(filename, data, callback) {
     if(!fs.existsSync(tempDir)) {
         fs.mkdirSync(tempDir);
     }
     filename = getSafeFileName(filename);
+    callback(filename);
     fs.writeFile(path.join(tempDir, filename), data, (err) => {
         if (err) {
             console.log(`writeCSV/ERROR: cannot write file ${filename}`);
-            return false
         } else {
-            console.log(`writeCSV/INFO: wrote ${filename} file`);
-            return filename;
+            console.log(`writeCSV/INFO: wrote ${filename} file`); 
         }
+        callback(filename);
     });
 }
 

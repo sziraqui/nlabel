@@ -62,17 +62,22 @@ function testJson2csv() {
 function testWriteCSV(){
     var ogfilename = filename;
     var ogdata = data;
-    resfile = tools.writeCSV(ogfilename, ogdata);
-    if (fs.existsSync(path.join(tempDir,resfile))) {
-        fs.readFile(path.join(tempDir,resfile), (err, res) => {
-            if (ogdata.localeCompare(res) == 0) {
-               console.log('testWriteCSV: OK');
-               return false;
-            }
-        });
-    }
-    console.log('testWriteCSV: FAIL');
-    return true;
+    tools.writeCSV(ogfilename, ogdata, (resfile) => {
+        //console.log('resfile '+resfile);
+        if (fs.existsSync(path.join(tempDir,resfile))) {
+          //  console.log('file exists');
+            fs.readFile(path.join(tempDir,resfile), (err, res) => {
+               // console.log('res ' +res);
+                if (ogdata.localeCompare(res) == 0) {
+                   console.log('testWriteCSV: OK');
+                   return false;
+                } 
+                console.log('testWriteCSV: FAIL');
+                return true;
+            });
+        }
+        
+    });
 }
 
 
