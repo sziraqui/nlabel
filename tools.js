@@ -1,9 +1,9 @@
 /* All backend functions are defined in this module */
 const fs = require('fs');
 const path = require('path');
+const mimeCheck = require('mime-types');
 const newLine = require('os').EOL;
 const tempDir = path.join(__dirname, 'temp');
-
 
 function json2csv(tags, labels) {
     
@@ -53,18 +53,35 @@ function getSafeFileName(filename) {
 }
 
 
-function parseTagsNlabels(fileList, tagList) {
+function parseTagsNlabels(fileDir, fileList, tagList) {
     out = [];
     for (var i in fileList) {
         var filename = fileList[i];
-        var json = {'filename': String(filename), 'tags':tagList};
+        var json = {'src':path.join(fileDir,filename), 'filename': String(filename), 'tags':tagList};
         out.push(json);
     }
     return out;
 } 
 
+function getImagesByDir(dir, callback) {
+    
+    imageList = [];
+    fs.readdir(dir, (err, items) => {
+        if(err) {
+            console.log('getImagesByDir/ERROR:', err.message);
+        } else {
+            for(var i in items) {
+                if(mimeCheck.lookup(items[i]).indexOf('image')!=-1) {
+                    imageList.push(items[i]);
+                }
+            }
+        }
+        callback(imageList);
+    });
+}
 
 exports.getSafeFileName = getSafeFileName;
 exports.json2csv = json2csv;
 exports.writeCSV = writeCSV;
 exports.parseTagsNlabels = parseTagsNlabels;
+exports.getImagesByDir = getImagesByDir;
