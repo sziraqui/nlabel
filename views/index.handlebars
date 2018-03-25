@@ -1,22 +1,22 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
     <li class="breadcrumb-item active" aria-current="page">Setup</li>
   </ol>
 </nav>
 
-<form>
+<form method="POST" action="/">
 
-  <label for="directorySelectInp">Get directory</label>
+  <label for="directorySelectInp">Set directory</label>
   <div id="directorySelectInp"class="input-group mb-3">
-    <div class="custom-file">
-      <input type="file" class="custom-file-input" id="inputGroupFile04" webkitdirectory mozdirectory msdirectory odirectory directory multiple>
-      <label class="custom-file-label" for="inputGroupFile04">Choose file</label><br>
+    <div class="input-group">
+      <input name="directoryPath" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+      <label for="directoryPath">Enter path</label><br>
     </div>
   </div>
   <div class="input-group mb-3">
        <small class="form-text text-muted">
-          The parent directory of the selected file will be scanned for images
+          The entered directory will be scanned for images
       </small>
   </div>
 
@@ -26,7 +26,7 @@
   <div class="input-group-prepend">
     <span class="input-group-text">List of Tags</span>
     </div>
-      <textarea class="form-control" aria-label="With textarea"></textarea>
+      <textarea name="tagTextAreaData" class="form-control" aria-label="With textarea"></textarea>
     </div>
   </div>
   <div class="input-group mb-3">
@@ -34,6 +34,6 @@
           Enter comma separated tags that will be used as labels for selected images
       </small>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary">Next</button>
 
 </form>
