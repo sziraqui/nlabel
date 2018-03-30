@@ -4,6 +4,8 @@ const path = require('path');
 const mimeCheck = require('mime-types');
 const newLine = require('os').EOL;
 const tempDir = path.join(__dirname, 'temp');
+const dataDir = path.join(__dirname, 'public', 'data');
+const outDir = path.join(__dirname, 'public', 'data', 'outputs');
 
 function json2csv(tags, labels) {
     
@@ -71,8 +73,13 @@ function getImagesByDir(dir, callback) {
             console.log('getImagesByDir/ERROR:', err.message);
         } else {
             for(var i in items) {
-                if(mimeCheck.lookup(items[i]).indexOf('image')!=-1) {
-                    imageList.push(items[i]);
+                console.log('items[i]:',items[i]);
+                if(items[i].lastIndexOf('.')!=-1 && mimeCheck.lookup(items[i]).indexOf('image')!=-1) {
+                    linkPath = path.join(dataDir, 'pictures', path.basename(items[i]));
+                    fs.symlink(path.join(dir,items[i]),linkPath, (err) => {
+                        if (err) return console.log(err.message)
+                        else imageList.push(linkPath);
+                    });
                 }
             }
         }
