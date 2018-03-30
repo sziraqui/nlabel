@@ -77,13 +77,13 @@ function getImagesByDir(dir, callback) {
                 if(items[i].lastIndexOf('.')!=-1 && mimeCheck.lookup(items[i]).indexOf('image')!=-1) {
                     linkPath = path.join(dataDir, 'pictures', path.basename(items[i]));
                     fs.symlink(path.join(dir,items[i]),linkPath, (err) => {
-                        if (err) return console.log(err.message)
-                        else imageList.push(linkPath);
+                        
+                        imageList.push(items[i]);
                     });
                 }
             }
         }
-        callback(imageList);
+        callback(items);
     });
 }
 
