@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+const path = require('path');
+const fs = require('fs');
+
+const rootDir = path.dirname(__dirname);
+// Paths to delete
+var garbage = ['temp', 'public/data/pictures', 'public/data/outputs'];
+
+delFilesInDirs(garbage);
+
+function delFilesInDirs(dirList) {
+    for(var i in dirList){
+       files = fs.readdirSync(path.join(rootDir, dirList[i]))
+        for(var j in files){
+            fs.unlink(path.join(rootDir, dirList[i], files[j]),(err2) => {
+                if(err2) throw err2;
+            });
+       }
+    }
+}
