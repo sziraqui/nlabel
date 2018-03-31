@@ -74,16 +74,15 @@ function getImagesByDir(dir, callback) {
         } else {
             for(var i in items) {
                 console.log('items[i]:',items[i]);
-                if(items[i].lastIndexOf('.')!=-1 && mimeCheck.lookup(items[i]).indexOf('image')!=-1) {
+                mime_check = mimeCheck.lookup(items[i]);
+                if(typeof mime_check == 'string' && mime_check.indexOf('image')!=-1) {
                     linkPath = path.join(dataDir, 'pictures', path.basename(items[i]));
-                    fs.symlink(path.join(dir,items[i]),linkPath, (err) => {
-                        
-                        imageList.push(items[i]);
-                    });
+                    fs.symlinkSync(path.join(dir,items[i]),linkPath)
+                    imageList.push(items[i]);
                 }
             }
+            callback(imageList);
         }
-        callback(items);
     });
 }
 
