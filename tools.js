@@ -77,7 +77,11 @@ function getImagesByDir(dir, callback) {
                 mime_check = mimeCheck.lookup(items[i]);
                 if(typeof mime_check == 'string' && mime_check.indexOf('image')!=-1) {
                     linkPath = path.join(dataDir, 'pictures', path.basename(items[i]));
-                    fs.symlinkSync(path.join(dir,items[i]),linkPath)
+                    try {
+                        symlinkError = fs.symlinkSync(path.join(dir,items[i]),linkPath)
+                    } catch (symlinkError) {
+                        console.log(symlinkError.message);
+                    }
                     imageList.push(items[i]);
                 }
             }
