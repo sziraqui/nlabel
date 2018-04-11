@@ -12,8 +12,11 @@ router.get('/', (req, res, next) => {
 
 
 router.post('/', (req, res, next) => {
-    var tags = require('../public/data/dummy-data.js').tags;
-    var labels = require('../public/data/dummy-data.js').labels;
+    var payload = req.body;
+    console.log("payload",JSON.stringify(payload));
+    tags = payload.tags;
+    console.log("tags",JSON.stringify(tags));
+    var labels = payload.labels;
     var data = json2csv(tags, labels);
     var filename = '';
     writeCSV('test.csv', data, (file) => {

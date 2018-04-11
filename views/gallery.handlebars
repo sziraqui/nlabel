@@ -8,30 +8,10 @@
 
 <form name="labelingForm" method="POST" action="/gallery">
   
-    <div class="card-columns">
-        {{#images}}
-        <div class="card">
-            <img class="card-img-top" src="/data/pictures/{{filename}}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">{{filename}}</h5>
-            </div>
-            <div>
-                <ul class="list-group">
-                    {{#tags}}
-                    <li class="list-group-item">
-                        <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">{{this}}</span>
-                            </div>
-                                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                        </div>
-                    </li>
-                    {{/tags}}
-                </ul>
-            </div>
-        </div>
-        {{/images}}
+    <div class="card-columns" id="cards-container">
+        {{>cards}}
     </div>
 
-  <button type="submit" class="btn btn-primary">Get Dataset</button>
+  <button type="submit" onclick="postEnteredData()" class="btn btn-primary">Get Dataset</button>
 </form>
+<script src="/javascripts/read_cards.js"></script>

@@ -59,7 +59,7 @@ function parseTagsNlabels(fileDir, fileList, tagList) {
     out = [];
     for (var i in fileList) {
         var filename = fileList[i];
-        var json = {'src':path.join(fileDir,filename), 'filename': String(filename), 'tags':tagList};
+        var json = {'src':path.join(fileDir,filename), 'filename': String(filename), id:Number(i), 'tags':tagList};
         out.push(json);
     }
     return out;

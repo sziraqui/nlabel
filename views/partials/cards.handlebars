@@ -1,0 +1,22 @@
+{{#images}}
+<div class="card card-parent" id="card-{{id}}">
+    <img class="card-img-top card-image" src="/data/pictures/{{filename}}" alt="Card image cap">
+    <div class="card-body">
+        <h5 class="card-title">{{filename}}</h5>
+    </div>
+    <div>
+        <ul class="list-group tag-list">
+            {{#tags}}
+            <li class="list-group-item tag-list-item">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text tag-name" value="defaultValue" id="inputGroup-sizing-sm">{{this}}</span>
+                    </div>
+                        <input type="text" class="form-control tag-input" value="defaultValue" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </li>
+            {{/tags}}
+        </ul>
+    </div>
+</div>
+{{/images}}
