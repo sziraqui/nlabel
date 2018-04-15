@@ -18,14 +18,13 @@ app.engine('handlebars', handlebars.engine);
 
 
 app.use(logger('dev'));
-app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUploader());
 app.use('/', indexRouter);
-app.use('/gallery', galleryRouter);
+app.use('/', galleryRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

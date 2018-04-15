@@ -1,19 +1,21 @@
 
 function postEnteredData() {
 
-    var labels = getEnteredData();
+    var labelValues = getEnteredData();
+    payload = {labels: labelValues, tags:Object.keys(labelValues[0])};
 
     $.ajax({
-       type: 'post',
+       type: 'POST',
        url: '/gallery',
-       data : {"labels": labels,
-                "tags": Object.keys(labels[0])},
-       dataType: 'json',
+       data : JSON.stringify(payload),
+       contentType: "application/json",
        success: function(data) {
             console.log("success");
+            console.log("Payload:", payload);
        },
        error: function(err) {
-            console.log(err);
+            console.log("POST error", err);
+            console.log("Payload:", payload);
        }
 
    });
@@ -31,7 +33,7 @@ function getEnteredData(){
         labels = getImageLabels(cards[i]);
         props.push(labels);
     }
-    alert(JSON.stringify(props));
+   // alert(JSON.stringify(props));
     return props;
 }
 
