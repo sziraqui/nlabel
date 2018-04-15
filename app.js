@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUploader());
 app.use('/', indexRouter);
-app.use('/', galleryRouter);
+app.use('/gallery', galleryRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

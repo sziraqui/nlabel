@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
 });
 
 
-router.post('/gallery', jsonParser, (req, res, next) => {
+router.post('/', jsonParser, (req, res, next) => {
     var payload = req.body;
     console.log("payload",JSON.stringify(payload));
     tags = payload.tags;

@@ -6,12 +6,12 @@
   </ol>
 </nav>
 
-<form name="labelingForm" method="POST" action="/gallery">
+<form name="labelingForm" method="POST">
   
     <div class="card-columns" id="cards-container">
         {{>cards}}
     </div>
 
-  <button type="submit" onclick="postEnteredData()" class="btn btn-primary">Get Dataset</button>
+  <button type="button"  onclick="postEnteredData()" class="btn btn-primary">Get Dataset</button>
 </form>
 <script src="/javascripts/read_cards.js"></script>
