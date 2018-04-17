@@ -1,10 +1,11 @@
 var express = require('express');
-var router = express.Router();
-var bodyParser = require('body-parser');
-
+var path = require('path');
 const writeCSV = require('../tools.js').writeCSV;
 const json2csv = require('../tools.js').json2csv;
-var jsonParser = bodyParser.json();
+const tempDir = require('../tools.js').tempDir;
+
+var router = express.Router();
+var jsonParser = express.json();
 
 /* GET images directory */
 router.get('/', (req, res, next) => {
@@ -15,18 +16,19 @@ router.get('/', (req, res, next) => {
 
 router.post('/', jsonParser, (req, res, next) => {
     var payload = req.body;
-    console.log("payload",JSON.stringify(payload));
+    console.log("D/router.post: payload", JSON.stringify(payload));
     tags = payload.tags;
-    console.log("tags",JSON.stringify(tags));
+    console.log("D/router.post: tags", JSON.stringify(tags));
     var labels = payload.labels;
     var data = json2csv(tags, labels); 
-    var filename = '';
-    writeCSV('test.csv', data, (file) => {
-        console.log('attempted to write', file);
-        filename = file;
+    var fileName = 'test.csv';
+
+    writeCSV(fileName, data, (file) => {
+        fileName = file;
+        res.download(path.join(tempDir, fileName));
     });
-    res.download('./temp/'+filename);
 
 });
+
 
 module.exports = router;

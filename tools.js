@@ -5,7 +5,9 @@ const mimeCheck = require('mime-types');
 const newLine = require('os').EOL;
 const tempDir = path.join(__dirname, 'temp');
 const dataDir = path.join(__dirname, 'public', 'data');
-const outDir = path.join(__dirname, 'public', 'data', 'outputs');
+const outDir = path.join(dataDir, 'outputs');
+const picDir = path.join(dataDir, 'pictures');
+
 
 function json2csv(tags, labels) {
     
@@ -25,62 +27,68 @@ function json2csv(tags, labels) {
 }
 
 
-function writeCSV(filename, data, callback) {
+function writeCSV(fileName, data, callback) {
+
     if(!fs.existsSync(tempDir)) {
         fs.mkdirSync(tempDir);
     }
-    filename = getSafeFileName(filename);
-    callback(filename);
-    fs.writeFile(path.join(tempDir, filename), data, (err) => {
+    fileName = getSafeFileName(fileName);
+    
+    fs.writeFile(path.join(tempDir, fileName), data, (err) => {
         if (err) {
-            console.log(`writeCSV/ERROR: cannot write file ${filename}`);
+            console.log(`E/writeCSV: cannot write file ${fileName}. ${err.message}`);
+            return false;
         } else {
-            console.log(`writeCSV/INFO: wrote ${filename} file`); 
+            console.log(`I/writeCSV: wrote ${fileName} file`); 
         }
-        callback(filename);
+        callback(fileName);
     });
+    return true;
 }
 
 
-function getSafeFileName(filename) {
-    if (fs.existsSync(path.join(tempDir, filename))) {
+function getSafeFileName(fileName, suffix=1) {
+    let safeName = fileName;
+    let extIndex = fileName.lastIndexOf('.');
+    while (fs.existsSync(path.join(tempDir, safeName)) && suffix <= Number.MAX_SAFE_INTEGER) {
         // file exists, change file name
-        let extIndex = filename.lastIndexOf('.');
-        filename = filename.substr(0, extIndex) + '-1' + filename.substr(extIndex);
-        return getSafeFileName(filename);
-    } else {
-        // file doesn't exist, safe to use existing name
-        return filename;
-    }
+        safeName = fileName.substr(0, extIndex) + '-' + suffix + fileName.substr(extIndex);
+        suffix++;
+    } 
+    // file doesn't exist, safe to use existing name
+    return safeName;
 }
 
 
 function parseTagsNlabels(fileDir, fileList, tagList) {
     out = [];
     for (var i in fileList) {
-        var filename = fileList[i];
-        var json = {'src':path.join(fileDir,filename), 'filename': String(filename), id:Number(i), 'tags':tagList};
+        var fileName = fileList[i];
+        var json = {'src': path.join(fileDir,fileName),
+                    'filename': String(fileName),
+                    'id': Number(i),
+                    'tags':tagList};
         out.push(json);
     }
     return out;
 } 
+
 
 function getImagesByDir(dir, callback) {
     
     imageList = [];
     fs.readdir(dir, (err, items) => {
         if(err) {
-            console.log('getImagesByDir/ERROR:', err.message);
+            console.log('E/getImagesByDir:', err.message);
         } else {
             for(var i in items) {
-                console.log('items[i]:',items[i]);
                 mime_check = mimeCheck.lookup(items[i]);
                 if(typeof mime_check == 'string' && mime_check.indexOf('image')!=-1) {
-                    linkPath = path.join(dataDir, 'pictures', path.basename(items[i]));
+                    linkPath = path.join(picDir, path.basename(items[i]));
                     try {
                         symlinkError = fs.symlinkSync(path.join(dir,items[i]),linkPath)
                     } catch (symlinkError) {
-                        console.log(symlinkError.message);
+                        console.log('W/getImagesByDir:', symlinkError.message);
                     }
                     imageList.push(items[i]);
                 }
@@ -90,8 +98,12 @@ function getImagesByDir(dir, callback) {
     });
 }
 
+
 exports.getSafeFileName = getSafeFileName;
 exports.json2csv = json2csv;
 exports.writeCSV = writeCSV;
 exports.parseTagsNlabels = parseTagsNlabels;
 exports.getImagesByDir = getImagesByDir;
+exports.dataDir = dataDir;
+exports.tempDir = tempDir;
+exports.outDir = outDir;

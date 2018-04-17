@@ -5,7 +5,7 @@ var getImagesByDir = require('../tools.js').getImagesByDir;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'NLabel' });
 });
 
 
@@ -17,7 +17,7 @@ router.post('/', function(req, res, next) {
   getImagesByDir(fileDir, (imageList) => {
     var data = parseTagsNlabels(fileDir, imageList, tagsArr);
     console.log(JSON.stringify(data));
-    res.render('gallery',{"images":data});
+    res.render('gallery', {"images":data});
   });
   
 });

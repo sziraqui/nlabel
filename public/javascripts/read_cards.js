@@ -22,7 +22,7 @@ function postEnteredData() {
 
 }
 
-function getEnteredData(){
+function getEnteredData() {
     
     var cardsContainer = document.getElementById("cards-container");
     var cards = cardsContainer.getElementsByClassName("card-parent");
@@ -33,12 +33,11 @@ function getEnteredData(){
         labels = getImageLabels(cards[i]);
         props.push(labels);
     }
-   // alert(JSON.stringify(props));
     return props;
 }
 
 
-function getImageLabels(cardItemNode){
+function getImageLabels(cardItemNode) {
 
     var tags = cardItemNode.getElementsByClassName("tag-list-item");
 
