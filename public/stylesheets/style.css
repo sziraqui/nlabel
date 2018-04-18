@@ -11,3 +11,8 @@ a {
   max-height: 64;
   padding: 16;
 }
+.hidden {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}

@@ -3,22 +3,8 @@ function postEnteredData() {
 
     var labelValues = getEnteredData();
     payload = {labels: labelValues, tags:Object.keys(labelValues[0])};
-
-    $.ajax({
-       type: 'POST',
-       url: '/gallery',
-       data : JSON.stringify(payload),
-       contentType: "application/json",
-       success: function(data) {
-            console.log("success");
-            console.log("Payload:", payload);
-       },
-       error: function(err) {
-            console.log("POST error", err);
-            console.log("Payload:", payload);
-       }
-
-   });
+    $('#labelingForm').append('<textarea name="payload" class="hidden">'+JSON.stringify(payload)+'</textarea>');
+    $('#labelingForm button[type="submit"]').click();
 
 }
 
