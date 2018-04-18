@@ -7,6 +7,7 @@ const tempDir = require('../tools.js').tempDir;
 var router = express.Router();
 var jsonParser = express.json();
 
+var lastSavedFile;
 /* GET images directory */
 router.get('/', (req, res, next) => {
     var data = require('../public/data/dummy-data.js').setupData;
@@ -24,10 +25,15 @@ router.post('/', jsonParser, (req, res, next) => {
     var fileName = 'test.csv';
 
     writeCSV(fileName, data, (file) => {
-        fileName = file;
-        res.download(path.join(tempDir, fileName));
+        lastSavedFile = fileName = file;
+        
     });
 
+});
+
+router.post('/download', (req, res, next) => {
+    console.log("download",req.body);
+    res.download(path.join(tempDir, lastSavedFile));
 });
 
 
