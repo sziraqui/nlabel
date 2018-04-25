@@ -1,0 +1,18 @@
+{
+    "id":"defaultconfig250418",
+    "rootDir":"public/data/pictures",
+    "imageSize":{
+        "width":720,
+        "height":1280 },
+    "classes": {
+        "person": {
+            "age":[18, 30, 50],
+            "gender":["male", "female"]
+        },
+        "vehicle": {
+            "type":["car","bike"],
+            "color":["white", "black","red"],
+            "brand":null
+        }
+    }
+}
