@@ -11,6 +11,9 @@ a {
   max-height: 64;
   padding: 16;
 }
+.integer-med-box {
+  width: 64px;
+}
 .hidden {
   visibility: hidden;
   width: 0;

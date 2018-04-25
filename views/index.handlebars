@@ -10,29 +10,34 @@
   <label for="directorySelectInp">Set directory</label>
   <div id="directorySelectInp"class="input-group mb-3">
     <div class="input-group">
-      <input name="directoryPath" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+      <input name="directoryPath" type="text" class="form-control" aria-describedby="basic-addon3" placeholder="{{dir}}">
       <label for="directoryPath">Enter path</label><br>
     </div>
   </div>
   <div class="input-group mb-3">
        <small class="form-text text-muted">
-          The entered directory will be scanned for images
+          The entered directory will be scanned for images. Default is 'public/data/pictures'
       </small>
   </div>
 
-  <label for="tagSelectInp">Set tags</label>
-  <div id="tagSelectInp"class="input-group mb-3">
-    <div class="input-group">
-  <div class="input-group-prepend">
-    <span class="input-group-text">List of Tags</span>
-    </div>
-      <textarea name="tagTextAreaData" class="form-control" aria-label="With textarea"></textarea>
+  <div style="width:40%">
+    <label for="basic-url" class="form-text">Image Dimension</label>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="width-span">width</span>
+      </div>
+      <input type="text" class="form-control integer-med-box" name="imgWidthInput" idaria-describedby="width-span" placeholder="{{imgHeight}}">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="height-span">height</span>
+      </div>
+      <input type="text" class="form-control integer-med-box" name="imgHeightInput" idaria-describedby="height-span" placeholder="{{imgWidth}}">
     </div>
   </div>
   <div class="input-group mb-3">
-       <small class="form-text text-muted">
-          Enter comma separated tags that will be used as labels for selected images
-      </small>
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="classes-span">Classes</span>
+    </div>
+    <input type="text" class="form-control" name="classesInput" placeholder={{classesList}} aria-describedby="classes-span">
   </div>
   <button type="submit" class="btn btn-primary">Next</button>
 
