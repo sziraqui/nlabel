@@ -3,14 +3,23 @@ var path = require('path');
 const writeCSV = require('../tools.js').writeCSV;
 const json2csv = require('../tools.js').json2csv;
 const tempDir = require('../tools.js').tempDir;
+var parseTagsNlabels = require('../tools.js').parseTagsNlabels;
+var getImagesByDir = require('../tools.js').getImagesByDir;
+var config = require('../public/data/config.json');
 
 var router = express.Router();
 var jsonParser = express.json();
 
 /* GET images directory */
 router.get('/', (req, res, next) => {
-    var data = require('../public/data/dummy-data.js').setupData;
-    res.render('gallery',{"images":data});
+    var fileDir = config.rootDir;
+    var tags = Object.keys(config.classes).join(',');
+    var tagsArr = tags.split(',');
+    getImagesByDir(fileDir, (imageList) => {
+      var data = parseTagsNlabels(fileDir, imageList, tagsArr);
+      console.log(JSON.stringify(data));
+      res.render('gallery', {"images":data});
+    });
 });
 
 

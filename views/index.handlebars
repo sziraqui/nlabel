@@ -37,8 +37,15 @@
     <div class="input-group-prepend">
       <span class="input-group-text" id="classes-span">Classes</span>
     </div>
-    <input type="text" class="form-control" name="classesInput" placeholder={{classesList}} aria-describedby="classes-span">
+    <input type="text" class="form-control" id="classes-input-id" name="classesInput" placeholder={{classesList}} aria-describedby="classes-span">
+    <button type="button" class="btn btn-primary" onclick="createClasses()">Create</button>
+  </div>
+  <div class='card'>
+    <ul id='class-ul'>
+      
+    </ul>
   </div>
   <button type="submit" class="btn btn-primary">Next</button>
 
 </form>
+<script src="/javascripts/init_from_config.js"></script>
