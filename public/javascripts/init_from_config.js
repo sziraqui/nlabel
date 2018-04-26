@@ -27,10 +27,7 @@ function createClasses(){
 
 // Does not work
 function removeClass() {
-    var parent = document.getElementById("classes-input-id");
-    for (var i = 0; i < parent.length; i++) {
-        parent.removeChild(parent[i]);
-    }
+    $('#class-ul').empty();
 }
 
 function nameClasses(names) {
