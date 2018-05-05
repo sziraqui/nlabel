@@ -11,6 +11,9 @@ var classItemEnd = " </ul>"
             +"    </div>"
             +"  </li>";
 
+
+
+
 function createClasses(){
     removeClass();
     var classes = String(document.getElementById("classes-input-id").value);

@@ -5,9 +5,8 @@
   </ol>
 </nav>
 
-<form method="POST" action="/">
-
-  <label for="directorySelectInp">Set directory</label>
+<form id="preConfigForm" method="POST" action="/new">
+    <label for="directorySelectInp">Set directory</label>
   <div id="directorySelectInp"class="input-group mb-3">
     <div class="input-group">
       <input name="directoryPath" type="text" class="form-control" aria-describedby="basic-addon3" placeholder="{{dir}}">
@@ -37,15 +36,38 @@
     <div class="input-group-prepend">
       <span class="input-group-text" id="classes-span">Classes</span>
     </div>
-    <input type="text" class="form-control" id="classes-input-id" name="classesInput" placeholder={{classesList}} aria-describedby="classes-span">
-    <button type="button" class="btn btn-primary" onclick="createClasses()">Create</button>
+    <input type="text" class="form-control" id="classes-input-id" name="classesInput" placeholder="{{classesList}}" aria-describedby="classes-span">
+    <button type="submit" class="btn btn-primary">Create</button>
   </div>
-  <div class='card'>
-    <ul id='class-ul'>
-      
+</form>
+
+<form id="configForm" method="POST" action="/gallery">
+
+  <!-- Create a list of classes and their labels with default values -->
+  <div class="card">
+    <ul id="class-ul">
+      <!-- new li(s) will be loaded by init_from_config.js -->
+      {{#each classkeys}}
+      <li class='class-li' name='class-li'>
+          <div>
+              <span class='class-name'>{{this}}</span>
+              <button type='button' onclick='addLabelListItem(this)'>+ Label</button>
+              <ul class='label-ul' name='label-ul'>
+               
+                <li class='label-li' name='label-li'>
+                      <input type='text' class='label-name-input' name='label-name-input' placeholder='label name'></input>
+                      <input type='text' class='label-value-input' name='label-value-input' placeholder='default values'></input>
+                </li>
+                
+              </ul>
+          </div>
+      </li>
+      {{/each}}
     </ul>
   </div>
-  <button type="submit" class="btn btn-primary">Next</button>
+  <button type="button" id="nextBtn" class="btn btn-primary" onclick="postConfigData()">Next</button>
+  <button type="submit" id="configFormBtn" class="btn btn-primary">Submit</button>
 
 </form>
-<script src="/javascripts/init_from_config.js"></script>
+<script src="/javascripts/init_from_config.js" defer></script>
+<script src="/javascripts/index_reader.js" defer></script>
