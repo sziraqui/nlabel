@@ -25,23 +25,23 @@
       <div class="input-group-prepend">
         <span class="input-group-text" id="width-span">width</span>
       </div>
-      <input type="text" class="form-control integer-med-box" name="imgWidthInput" idaria-describedby="width-span" placeholder="{{imgHeight}}">
+      <input type="text" class="form-control integer-med-box" name="imgWidthInput" idaria-describedby="width-span" placeholder="{{imgWidth}}">
       <div class="input-group-prepend">
         <span class="input-group-text" id="height-span">height</span>
       </div>
-      <input type="text" class="form-control integer-med-box" name="imgHeightInput" idaria-describedby="height-span" placeholder="{{imgWidth}}">
+      <input type="text" class="form-control integer-med-box" name="imgHeightInput" idaria-describedby="height-span" placeholder="{{imgHeight}}">
     </div>
   </div>
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text" id="classes-span">Classes</span>
     </div>
-    <input type="text" class="form-control" id="classes-input-id" name="classesInput" placeholder="{{classesList}}" aria-describedby="classes-span">
+    <input type="text" class="form-control" id="classes-input-id" name="classesInput" placeholder="{{classList}}" aria-describedby="classes-span">
     <button type="submit" class="btn btn-primary">Create</button>
   </div>
 </form>
 
-<form id="configForm" method="POST" action="/gallery">
+<form id="configForm" method="POST" action="/">
 
   <!-- Create a list of classes and their labels with default values -->
   <div class="card">
@@ -66,7 +66,7 @@
     </ul>
   </div>
   <button type="button" id="nextBtn" class="btn btn-primary" onclick="postConfigData()">Next</button>
-  <button type="submit" id="configFormBtn" class="btn btn-primary">Submit</button>
+  <button type="submit" id="configFormBtn" class="btn btn-primary hidden">Submit</button>
 
 </form>
 <script src="/javascripts/init_from_config.js" defer></script>
