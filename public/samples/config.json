@@ -1,18 +1,63 @@
 {
-    "id":"defaultconfig250418",
-    "rootDir":"public/data/pictures",
-    "imageSize":{
-        "width":720,
-        "height":1280 },
-    "classes": {
-        "person": {
-            "age":[18, 30, 50],
-            "gender":["male", "female"]
+    "id": "defaultconfig250418",
+    "rootDir": "/home/sziraqui/Pictures/Webcam",
+    "imageSize": {
+        "width": 1280,
+        "height": 720
+    },
+    "classes": [
+        {
+            "classname": "man",
+            "labels": [
+                {
+                    "name": "age",
+                    "values": [
+                        18,
+                        30,
+                        60
+                    ]
+                },
+                {
+                    "name": "gender",
+                    "values": [
+                        "male",
+                        "female"
+                    ]
+                }
+            ]
         },
-        "vehicle": {
-            "type":["car","bike"],
-            "color":["white", "black","red"],
-            "brand":null
+        {
+            "classname": "car",
+            "labels": [
+                {
+                    "name": "speed",
+                    "values": [
+                        40,
+                        80,
+                        120
+                    ]
+                },
+                {
+                    "name": "color",
+                    "values": [
+                        "blue",
+                        "red",
+                        "green"
+                    ]
+                },
+                {
+                    "name": "brand",
+                    "values": [
+                        "maruti",
+                        "bmw",
+                        "chev"
+                    ]
+                },
+                {
+                    "name": "wheels",
+                    "values": []
+                }
+            ]
         }
-    }
+    ]
 }
