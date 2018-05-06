@@ -12,14 +12,7 @@ var jsonParser = express.json();
 
 /* GET images directory */
 router.get('/', (req, res, next) => {
-    var fileDir = config.rootDir;
-    var tags = Object.keys(config.classes).join(',');
-    var tagsArr = tags.split(',');
-    getImagesByDir(fileDir, (imageList) => {
-      var data = parseTagsNlabels(fileDir, imageList, tagsArr);
-      console.log(JSON.stringify(data));
-      res.render('gallery', {"images":data});
-    });
+    res.render('gallery');
 });
 
 

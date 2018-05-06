@@ -1,6 +1,6 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 1.5em;
+  font: 12pt "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -18,4 +18,38 @@ a {
   visibility: hidden;
   width: 0;
   height: 0;
+}
+
+.gallery-view {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  width: 100%;
+  height: 720px;
+  background: transparent;
+}
+
+.side-view {
+  box-sizing: border-box;
+  width: 20%;
+  height: 100%;
+  padding: 1em;
+  margin-left: 0.5em;
+  overflow-y: auto;
+  background:lightgray;
+}
+
+.main-view {
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 80%;
+  height: 100%;
+  margin-right: 0.5em;
+  background: lightblue;
+}
+
+.btn-toolbar {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }

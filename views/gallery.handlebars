@@ -1,19 +1,72 @@
 <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/">Home</a></li>
-    <li class="breadcrumb-item"><a href="/">Setup</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="/gallery">Gallery</a></li>
-  </ol>
+<div class="border border-primary rounded bg-white p-2 mt-2 float-left">
+  <!-- File meta-data -->
+  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+</div>
+<div class="btn-toolbar float-right" role="toolbar">
+  <div class="btn-group mr-4" role="group" aria-label="First group">
+    <button type="button" class="btn btn-secondary">Undo</button>
+    <button type="button" class="btn btn-secondary">Redo</button>
+    <button type="button" class="btn btn-secondary">Reset box</button>
+  </div>
+  <div class="btn-group mr-2" role="group" aria-label="Second group">
+    <button type="button" class="btn btn-success">Save All</button>
+    <button type="button" class="btn btn-danger">Discard All</button>
+  </div>
+  <div class="btn-group ml-2" role="group" aria-label="Second group">
+    <button type="button" class="btn btn-outline-primary">Previous</button>
+    <button type="button" class="btn btn-outline-primary">Next</button>
+  </div>
+  <div class=""></div>
+</div>
 </nav>
 
-<form id="labelingForm" method="POST" action="/gallery">
-  
-  <div class="card-columns" id="cards-container">
-      {{>cards}}
+
+<div class="gallery-view">
+
+  <canvas class="main-view card">
+    
+  </canvas>
+
+  <div class="side-view card">
+
+    <form action="#" method="POST">
+      <!-- Class selection -->
+      <div class="form-row">
+        <div class="col">
+        <input class="form-control" list="class-list" name="class">
+        <datalist id="class-list">
+          <!-- list of class names -->
+          <option value="Person">
+          <!-- list of class names END -->
+        </datalist>
+        </div>
+        <div class="col">
+          <button class="btn btn-primary mb-2" type="button">Set</button>
+        </div>
+      </div>
+      <!-- Class selection END -->
+      <!-- list of labels for selected class-->
+      <div class="input-group input-group-sm mb-1">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-sizing-sm">age</span>
+        </div>
+        <input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" list="value-list-CLASSNAME" placeholder="value">
+        <datalist name="value-list" id="value-list-CLASSNAME">
+          <!-- list of values for unique id-->
+          <option value="18"></option>
+          <!-- list of values END -->
+        </datalist>
+      </div>
+    <!-- list of labels END -->
+      <button class="btn btn-outline-primary btn-sm mb-1" type="button">+ Label</button>
+      <button class="btn btn-block btn-primary btn-sm mb-1 " type="submit">Save this object</button>
+    </form>
+    
   </div>
 
-  <button type="button"  onclick="postEnteredData()" class="btn btn-primary">Get Dataset</button>
-  <!-- Submit will be initiated from ajax -->
-  <button type="submit" class="hidden">Download</button>
-</form>
-<script src="/javascripts/read_cards.js"></script>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/i18n/defaults-*.min.js"></script>
