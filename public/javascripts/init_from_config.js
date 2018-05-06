@@ -1,7 +1,6 @@
 var classItemStart = "  <li class='class-li' name='class-li'>"
             +"    <div>"
-            +"      <span class='label-name'>Person</span>"
-            +"      <button type='button' onclick='addLabelListItem(this)'>+ Label</button>"
+            +"      <input class='class-name' placeholder='classname'></input>"
             +"      <ul class='label-ul' name='label-ul'>";
 var labelItem = "       <li class='label-li' name='label-li'>"
             +"            <input type='text' class='label-name-input' name='label-name-input' placeholder='label name'>"
@@ -10,22 +9,13 @@ var labelItem = "       <li class='label-li' name='label-li'>"
 var classItemEnd = " </ul>" 
             +"    </div>"
             +"  </li>";
+var addClassBtn = "<button type='button' onclick='addLabelListItem(this)'>+ Label</button>";
 
 
 
-
-function createClasses(){
-    removeClass();
-    var classes = String(document.getElementById("classes-input-id").value);
-    if (classes.includes(',')) {
-        classes = classes.split(',');
-    } else {
-        var classes = [classes];
-    }
-    for(var i = 0; i < classes.length; i++) {
-       $('#class-ul').append(classItemStart + labelItem + classItemEnd);
-    }
-    nameClasses(classes);
+function addClass(){
+    $('#class-ul').append(classItemStart + labelItem + classItemEnd);
+    $('#class-ul').append(addClassBtn);
 }
 
 // Does not work
@@ -46,6 +36,6 @@ function nameClasses(names) {
 }
 
 function addLabelListItem(clickedItem) {
-    var labelUl = clickedItem.parentNode.getElementsByClassName('label-ul');
+    var labelUl = clickedItem.parentNode.parentNode.getElementsByClassName('label-ul');
     $(labelUl[0]).append(labelItem);
 }

@@ -11,21 +11,13 @@ substitute = {
   dir: config.rootDir,
   imgWidth: config.imageSize.width,
   imgHeight: config.imageSize.height,
-  classes: config.classes,
-  classList: Object.keys(config.classes).join(' '),
-  classkeys: Object.keys(config.classes)
+  classes: config.classes
 }
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   
   res.render('index', substitute);
-});
-
-
-router.post('/new', function(req, res, next) {
-    updateSubstitute(req.body);
-    res.redirect('/');
 });
 
 
@@ -48,39 +40,24 @@ router.post('/', function(req, res, next) {
 });
 
 
-function updateSubstitute(body){
-  var fileDir = String(body.directoryPath);
-  var imgWidth = Number(body.imgWidthInput);
-  var imgHeight = Number(body.imgHeightInput);
-  var classList = String(body.classesInput);
-   // update substitute json
-   if (fileDir != '' && fileDir != 'undefined') {
-    substitute.dir = fileDir;
-  }
-  if (classList != '') {
-    substitute.classList = classList;
-    substitute.classkeys = classList.split(' ');
-  }
-  if (imgHeight !=0 && imgWidth !=0 && !isNaN(imgWidth) && !isNaN(imgHeight)) {
-    substitute.imgWidth = imgWidth;
-    substitute.imgHeight = imgHeight;
-  }
-  
-  return substitute
-}
-
-
 function updateConfig(body) {
   
   var classes = body.newclasses;
   // update config.json
-  config.rootDir = substitute.dir;
-  config.imageSize.width = substitute.imgWidth;
-  config.imageSize.height = substitute.imgHeight;
+  var fileDir = String(body.directoryPath);
+  var imgWidth = Number(body.imgWidthInput);
+  var imgHeight = Number(body.imgHeightInput);
+  
+   if (fileDir != '' && fileDir != 'undefined') {
+    config.rootDir = fileDir;
+  }
+ 
+  if (imgHeight !=0 && imgWidth !=0 && !isNaN(imgWidth) && !isNaN(imgHeight)) {
+    config.imageSize.width = imgWidth;
+    config.imageSize.height = imgHeight;
+  }
   if (typeof classes != 'undefined') {
     config.classes = JSON.parse(classes);
-  } else {
-    config.classes = substitute.classes;
   }
   
   return config

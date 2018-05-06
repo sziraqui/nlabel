@@ -2,14 +2,14 @@
 function postConfigData() {
     var classes = readClasses();
     if (!isEmpty(classes)){
-        $('#configForm').append('<textarea name="newclasses" class="hidden">'+JSON.stringify(classes)+'</textarea>');
+        $('#configForm').append('<textarea name="newclasses">'+JSON.stringify(classes,null,2)+'</textarea>');
     }
     $('#configForm button[type="submit"]').click();
 }
 
 
 function readClasses() {
-    classes = {};
+    classes = [];
     // get #class-ul
     var classUl = document.getElementById("class-ul");
    
@@ -19,7 +19,7 @@ function readClasses() {
     // for each li
     for (var i = 0; i < classLis.length; i++) {
         // get .class-name
-        var className = classLis[i].getElementsByClassName("class-name")[0].innerHTML;
+        var className = classLis[i].getElementsByClassName("class-name")[0].value;
         
       
         var classJson = {};
@@ -29,6 +29,7 @@ function readClasses() {
         
         var labelLis = classLis[i].getElementsByClassName("label-li");
         // for each label-li
+        var labelList = [];
         var labelName = null
         for (var j = 0; j < labelLis.length; j++) {
             // get value of .label-name-input
@@ -46,13 +47,18 @@ function readClasses() {
             if (defaultValues == '') {
                 defaultValues = [];
             }
-            
-            classJson[labelName] = defaultValues;
+            labelJson = { 
+                name: labelName,
+                values: defaultValues
+            }
+            labelList.push(labelJson);
         }
-        if (isEmpty(classJson)) {
-            continue;
+        var classJson = {
+            classname: className,
+            labels: labelList
         }
-        classes[className] = classJson;
+        
+        classes.push(classJson);
     }
     
     return classes;
@@ -61,7 +67,7 @@ function readClasses() {
 
 function string2Array(str) {
     // converts space separated strings into array of strings or ints
-    var arr = str.split(' ');
+    var arr = str.replace(/^[ ]+|[ ]+$/g,'').split(' ');
     console.log('arr'+arr);
     if (arr.length > 1) {
         if (!isNaN(Number(arr[0]))) {

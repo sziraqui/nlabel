@@ -5,12 +5,59 @@
         "width": 1280,
         "height": 720
     },
-    "classes": {
-        "person": {
-            "sex": [
-                "m",
-                "f"
+    "classes": [
+        {
+            "classname": "man",
+            "labels": [
+                {
+                    "name": "age",
+                    "values": [
+                        18,
+                        30,
+                        60
+                    ]
+                },
+                {
+                    "name": "gender",
+                    "values": [
+                        "male",
+                        "female"
+                    ]
+                }
+            ]
+        },
+        {
+            "classname": "car",
+            "labels": [
+                {
+                    "name": "speed",
+                    "values": [
+                        40,
+                        80,
+                        120
+                    ]
+                },
+                {
+                    "name": "color",
+                    "values": [
+                        "blue",
+                        "red",
+                        "green"
+                    ]
+                },
+                {
+                    "name": "brand",
+                    "values": [
+                        "maruti",
+                        "bmw",
+                        "chev"
+                    ]
+                },
+                {
+                    "name": "wheels",
+                    "values": []
+                }
             ]
         }
-    }
+    ]
 }
