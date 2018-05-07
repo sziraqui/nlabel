@@ -7,15 +7,14 @@ var labelItem = "       <li class='label-li' name='label-li'>"
             +"            <input type='text' class='label-value-input' name='label-value-input' placeholder='default values'>"
             +"          </li>";
 var classItemEnd = " </ul>" 
+            +"       <button type='button' onclick='addLabelListItem(this)'>+ Label</button>"
             +"    </div>"
             +"  </li>";
-var addClassBtn = "<button type='button' onclick='addLabelListItem(this)'>+ Label</button>";
 
 
 
 function addClass(){
     $('#class-ul').append(classItemStart + labelItem + classItemEnd);
-    $('#class-ul').append(addClassBtn);
 }
 
 // Does not work
