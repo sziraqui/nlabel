@@ -1,8 +1,23 @@
 <nav aria-label="breadcrumb">
-<div class="border border-primary rounded bg-white p-2 mt-2 float-left">
-  <!-- File meta-data -->
-  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+<div class="row float-left m-2 p-0">
+  <div class="m-2 float-left row">
+    <div class="border border-secondary rounded-left bg-white text-secondary float-left p-2 col text-nowrap">dir</div>
+    <div class="border border-secondary rounded-right bg-secondary text-white float-left p-2 col">{{dir}}</div>
+  </div>
+  <div class="m-2 float-left row">
+    <div class="border border-secondary rounded-left bg-white text-secondary float-left p-2 col text-nowrap">filename</div>
+    <div id="img-name" class="border border-secondary rounded-right bg-secondary text-white float-left p-2 col text-nowrap">{{image.name}}</div>
+  </div>
+  <div class="m-2 float-left row">
+    <div class="border border-secondary rounded-left bg-white text-secondary float-left p-2 col text-nowrap">width</div>
+    <div id="img-true-w" class="border border-secondary rounded-right bg-secondary text-white float-left p-2 col text-nowrap">{{image.dim.width}}</div>
+  </div>
+  <div class="m-2 float-left row">
+    <div class="border border-secondary rounded-left bg-white text-secondary float-left p-2 col text-nowrap">height</div>
+    <div id="img-true-h" class="border border-secondary rounded-right bg-secondary text-white float-left p-2 col text-nowrap">{{image.dim.height}}</div>
+  </div> 
 </div>
+
 <div class="btn-toolbar float-right" role="toolbar">
   <div class="btn-group mr-4" role="group" aria-label="First group">
     <button type="button" class="btn btn-secondary">Undo</button>
@@ -17,14 +32,13 @@
     <button type="button" class="btn btn-outline-primary">Previous</button>
     <button type="button" class="btn btn-outline-primary">Next</button>
   </div>
-  <div class=""></div>
 </div>
 </nav>
 
 
 <div class="gallery-view">
 
-  <canvas class="main-view card">
+  <canvas class="main-view card" id="artboard" width="{{canvas.width}}" height="{{canvas.height}}">
     
   </canvas>
 
@@ -34,10 +48,12 @@
       <!-- Class selection -->
       <div class="form-row">
         <div class="col">
-        <input class="form-control" list="class-list" name="class">
+        <input class="form-control" list="class-list" name="class" value="{{#if currClass.classname}}{{currClass.classname}}{{/if}}">
         <datalist id="class-list">
           <!-- list of class names -->
-          <option value="Person">
+          {{#each classList}}
+          <option value="{{this}}">
+          {{/each}}
           <!-- list of class names END -->
         </datalist>
         </div>
@@ -47,17 +63,23 @@
       </div>
       <!-- Class selection END -->
       <!-- list of labels for selected class-->
+      {{#with currClass}}
+      {{#each labels}}
       <div class="input-group input-group-sm mb-1">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-sm">age</span>
+          <span class="input-group-text" id="inputGroup-sizing-sm">{{this.name}}</span>
         </div>
-        <input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" list="value-list-CLASSNAME" placeholder="value">
-        <datalist name="value-list" id="value-list-CLASSNAME">
+        <input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" list="value-list-{{name}}" placeholder="value">
+        <datalist name="value-list" id="value-list-{{name}}">
           <!-- list of values for unique id-->
-          <option value="18"></option>
+          {{#each this.values}}
+          <option value="{{this}}"></option>
+          {{/each}}
           <!-- list of values END -->
         </datalist>
       </div>
+      {{/each}}
+      {{/with}}
     <!-- list of labels END -->
       <button class="btn btn-outline-primary btn-sm mb-1" type="button">+ Label</button>
       <button class="btn btn-block btn-primary btn-sm mb-1 " type="submit">Save this object</button>
@@ -70,3 +92,4 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/i18n/defaults-*.min.js"></script>
+<script src="/javascripts/canvas-driver.js"></script>
