@@ -75,7 +75,11 @@ function parseTagsNlabels(fileDir, fileList, tagList) {
 
 
 function getImagesByDir(dir, callback) {
-    
+    try {
+        symlinkError = fs.symlinkSync(dir, picDir);
+    } catch (symlinkError) {
+        console.log('W/getImagesByDir:', symlinkError.message);
+    }
     imageList = [];
     fs.readdir(dir, (err, items) => {
         if(err) {
@@ -84,12 +88,7 @@ function getImagesByDir(dir, callback) {
             for(var i in items) {
                 mime_check = mimeCheck.lookup(items[i]);
                 if(typeof mime_check == 'string' && mime_check.indexOf('image')!=-1) {
-                    linkPath = path.join(picDir, path.basename(items[i]));
-                    try {
-                        symlinkError = fs.symlinkSync(path.join(dir,items[i]),linkPath)
-                    } catch (symlinkError) {
-                        console.log('W/getImagesByDir:', symlinkError.message);
-                    }
+                    
                     imageList.push(items[i]);
                 }
             }
