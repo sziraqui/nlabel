@@ -58,6 +58,12 @@ router.get('/:ptr/:classname', (req, res, next) => {
 });
 
 
+router.post('/save-all', (req, res, next) => {
+    console.log('I/saveAll:', req.body.annotesData);
+    res.sendStatus(200);
+});
+
+
 router.post('/', jsonParser, (req, res, next) => {
     var payload = JSON.parse(req.body.payload);
     console.log("D/router.post: payload", JSON.stringify(payload));

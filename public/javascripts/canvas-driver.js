@@ -10,6 +10,7 @@ var startY = 0;
 var endX = 0;
 var endY = 0;
 var items = [];
+var output = [];
 /**
  * Event handlers
  */
@@ -25,6 +26,7 @@ window.onload = function() {
     c.fillStyle = "blue";
     c.globalAlpha = 0.5;
     mC.strokeStyle = "green";
+    
     // custom event triggered after image is rendered on main canvas
     mCanvas.addEventListener('imageRendered', redrawBBs);
     renderImage(mCanvas);
@@ -37,6 +39,7 @@ window.onload = function() {
      * Handle clicks
      */
     document.getElementById('bb-save-btn').onclick = saveItem;
+    document.getElementById('bb-save-all').onclick = saveAll;
 }
 
 
@@ -56,20 +59,27 @@ function saveItem() {
         labels: labels
     }
     items.push(item);
-    saveAnnotation();
+    saveAnnotation(output);
 
 }
+
 
 function saveAnnotation(output) {
     var imgname = document.getElementById('img-name').innerHTML;
-    output = {
+    const data = {
         filename: imgname,
         annotes: items
     }
-    
+    output.push(data);
     var jsonViewer = document.getElementById('json-viewer');
     jsonViewer.innerHTML = JSON.stringify(output, null, 4);
 }
+
+
+function saveAll(){
+    $('#submit-save-all').click();
+}
+
 
 function renderImage(target) {
     console.log('rendering image');
@@ -208,16 +218,33 @@ function redrawBBs() {
     } catch (error) {
         console.log('E/onResume:', error);
     }
-    console.log('I/onResume: redrawing canvas...');
-    var drawList = data.annotes;
+    output = data;
+    var imgname = document.getElementById('img-name').innerHTML;
+
+    var drawList = currImageAnnotes(data, imgname);
+    console.log('drawList')
     if(Array.isArray(drawList) && typeof drawList != 'undefined'){
         for(var i = 0; i < drawList.length; i++) {
             var bb = drawList[i].location;
+            console.log('I/onResume: redrawing canvas...');
             if(typeof bb != 'undefined'){
                 saveBB(bb.startX, bb.startY,
                        bb.endX - bb.startX, bb.endY - bb.startY);
                 items.push(drawList[i]);
+                
             }
         }
     }
+}
+
+
+function currImageAnnotes(data, imgname) {
+
+    for(var i = 0; i < data.length; i++) {
+        if(data[i].filename == imgname) {
+            
+            return data[i].annotes;
+        }
+    }
+    return [];
 }

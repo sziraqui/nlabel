@@ -2,7 +2,7 @@
 <div class="row float-left m-2 p-0">
   <div class="m-2 float-left row">
     <div class="border border-secondary rounded-left bg-white text-secondary float-left p-2 col text-nowrap">dir</div>
-    <div class="border border-secondary rounded-right bg-secondary text-white float-left p-2 col">{{dir}}</div>
+    <div id="img-dir" class="border border-secondary rounded-right bg-secondary text-white float-left p-2 col">{{dir}}</div>
   </div>
   <div class="m-2 float-left row">
     <div class="border border-secondary rounded-left bg-white text-secondary float-left p-2 col text-nowrap">filename</div>
@@ -25,7 +25,7 @@
     <button type="button" class="btn btn-secondary">Reset box</button>
   </div>
   <div class="btn-group mr-2" role="group" aria-label="Second group">
-    <button type="button" class="btn btn-success">Save All</button>
+    <button type="button" class="btn btn-success" id="bb-save-all">Save All</button>
     <button type="button" class="btn btn-danger">Discard All</button>
   </div>
   <div class="btn-group ml-2" role="group" aria-label="Second group">
@@ -127,9 +127,45 @@
     
   </div>
 </div>
-<div id="json-viewer" class="card m-2 p-2">
-{ "filename": "sarfaraz-1.jpg", "annotes": [ { "location": { "startX": 99, "startY": 80, "endX": 308, "endY": 317 }, "labels": [ { "name": "age", "value": "18" }, { "name": "gender", "value": null } ] }, { "location": { "startX": 454, "startY": 239, "endX": 524, "endY": 328 }, "labels": [ { "name": "age", "value": null }, { "name": "gender", "value": null } ] } ] }
-</div>
+<form action="/gallery/save-all" method="POST">
+  <textarea id="json-viewer" name="annotesData" class="container-fluid m-2 p-2" style="overflow:hidden; height:auto;">
+  [
+    {
+        "filename": "satya-1.jpg",
+        "annotes": [
+            {
+                "location": {
+                    "startX": 713,
+                    "startY": 41,
+                    "endX": 1007,
+                    "endY": 274
+                },
+                "labels": [
+                    {
+                        "name": "speed",
+                        "value": null
+                    },
+                    {
+                        "name": "color",
+                        "value": null
+                    },
+                    {
+                        "name": "brand",
+                        "value": null
+                    },
+                    {
+                        "name": "wheels",
+                        "value": null
+                    }
+                ]
+            }
+        ]
+    }
+]
+  </textarea>
+  <input type="submit" id="submit-save-all" class="hidden">
+</form>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/i18n/defaults-*.min.js"></script>
