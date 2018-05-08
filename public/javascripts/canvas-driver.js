@@ -75,13 +75,11 @@ function renderImage() {
     var name = document.getElementById('img-name').innerHTML;
     if(typeof name != 'undefined') {
         image.src = picDir + name;
-        var x = 0;
-        var y = 0;
-        var width = mC.canvas.width;
-        var height = mC.canvas.height;
-
+        var imgW = parseInt(document.getElementById('img-true-w').innerHTML);
+        var imgH = parseInt(document.getElementById('img-true-h').innerHTML);
         image.onload = function() {
-            mC.drawImage(image, x, y, width, height);
+            mC.drawImage(image, 0, 0, imgW, imgH,
+                                0, 0, mC.canvas.width, mC.canvas.height);
             console.log('Image rendered successfully');
             console.log(`I/canvas: Height: ${mCanvas.height} Width: ${mCanvas.width}`);
         };

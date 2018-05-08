@@ -2,8 +2,8 @@
     "id": "defaultconfig250418",
     "rootDir": "/home/sziraqui/Pictures/Webcam",
     "imageSize": {
-        "width": 1280,
-        "height": 720
+        "width": 640,
+        "height": 360
     },
     "classes": [
         {
@@ -55,6 +55,15 @@
                 },
                 {
                     "name": "wheels",
+                    "values": []
+                }
+            ]
+        },
+        {
+            "classname": "bike",
+            "labels": [
+                {
+                    "name": "color",
                     "values": []
                 }
             ]
