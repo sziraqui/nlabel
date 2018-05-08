@@ -21,12 +21,14 @@ window.onload = function() {
     mCanvas = document.getElementById('main-layer');
     mC = mCanvas.getContext('2d');
 
-    renderImage();
-
     c.strokeStyle = "red";
     c.fillStyle = "blue";
     c.globalAlpha = 0.5;
     mC.strokeStyle = "green";
+    // custom event triggered after image is rendered on main canvas
+    mCanvas.addEventListener('imageRendered', redrawBBs);
+    renderImage(mCanvas);
+
     canvas.onmousedown = mouseHold;
     canvas.onmousemove = mouseMove;
     canvas.onmouseup = mouseRelease;
@@ -69,8 +71,9 @@ function saveAnnotation(output) {
     jsonViewer.innerHTML = JSON.stringify(output, null, 4);
 }
 
-function renderImage() {
+function renderImage(target) {
     console.log('rendering image');
+    var event = new Event('imageRendered');
     var image = new Image();
     var name = document.getElementById('img-name').innerHTML;
     if(typeof name != 'undefined') {
@@ -80,10 +83,14 @@ function renderImage() {
         image.onload = function() {
             mC.drawImage(image, 0, 0, imgW, imgH,
                                 0, 0, mC.canvas.width, mC.canvas.height);
+            
+            target.dispatchEvent(event);
             console.log('Image rendered successfully');
             console.log(`I/canvas: Height: ${mCanvas.height} Width: ${mCanvas.width}`);
+            
         };
     }
+    
 }
 
 
@@ -179,6 +186,9 @@ function getLabels() {
     for(var i = 0; i < labelNodes.length; i++) {
         var name = labelNodes[i].getElementsByClassName('data-label-name')[0].innerHTML;
         var val = labelNodes[i].getElementsByClassName('data-label-value')[0].value;
+        if (val == "") {
+            val = null;
+        }
         label = {
             name: name,
             value: val
@@ -186,4 +196,28 @@ function getLabels() {
         labels.push(label);
     }
     return labels;
+}
+
+
+function redrawBBs() {
+    var jsonStr = document.getElementById('json-viewer').innerHTML;
+    if(jsonStr == "") return;
+    var data = {};
+    try {
+        data = JSON.parse(jsonStr);
+    } catch (error) {
+        console.log('E/onResume:', error);
+    }
+    console.log('I/onResume: redrawing canvas...');
+    var drawList = data.annotes;
+    if(Array.isArray(drawList) && typeof drawList != 'undefined'){
+        for(var i = 0; i < drawList.length; i++) {
+            var bb = drawList[i].location;
+            if(typeof bb != 'undefined'){
+                saveBB(bb.startX, bb.startY,
+                       bb.endX - bb.startX, bb.endY - bb.startY);
+                items.push(drawList[i]);
+            }
+        }
+    }
 }
