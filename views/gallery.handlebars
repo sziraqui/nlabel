@@ -53,7 +53,7 @@
       <!-- Class selection -->
       <div class="form-row">
         <div class="col">
-        <input class="form-control" list="class-list" name="class" value="{{#if currClass.classname}}{{currClass.classname}}{{/if}}">
+        <input id="data-classname" class="form-control" list="class-list" name="class" value="{{#if currClass.classname}}{{currClass.classname}}{{/if}}">
         <datalist id="class-list">
           <!-- list of class names -->
           {{#each classList}}
@@ -70,11 +70,11 @@
       <!-- list of labels for selected class-->
       {{#with currClass}}
       {{#each labels}}
-      <div class="input-group input-group-sm mb-1">
+      <div class="input-group input-group-sm mb-1" name="label-container">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-sm">{{this.name}}</span>
+          <span class="input-group-text data-label-name" id="inputGroup-sizing-sm" name="data-label-name">{{this.name}}</span>
         </div>
-        <input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" list="value-list-{{name}}" placeholder="value">
+        <input type="text" class="form-control data-label-value" name="data-label-value" aria-describedby="inputGroup-sizing-sm" list="value-list-{{name}}" placeholder="value">
         <datalist name="value-list" id="value-list-{{name}}">
           <!-- list of values for unique id-->
           {{#each this.values}}
@@ -87,16 +87,49 @@
       {{/with}}
     <!-- list of labels END -->
       <button class="btn btn-outline-primary btn-sm mb-1" type="button">+ Label</button>
-      <button class="btn btn-block btn-primary btn-sm mb-1 " type="submit">Save this object</button>
-      <span id="log-0"></span><br>
-      <span id="log-1"></span><br>
-      <span id="log-2"></span>
+      <button id="bb-save-btn" class="btn btn-block btn-primary btn-sm mb-1 " type="button">Save current box</button>
+      
+    <!-- Show current bounding box info -->
+      <div>
+        <div class="row float-left m-1 p-0">
+          <div class="m-1 float-left row">
+            <div class="border border-info rounded-left bg-white text-info float-left p-1 col text-nowrap">start X</div>
+            <div id="bb-start-x" class="border border-info rounded-right bg-info text-white float-left p-1 col">0</div>
+          </div>
+          <div class="m-1 float-left row">
+            <div class="border border-info rounded-left bg-white text-info float-left p-1 col text-nowrap">start Y</div>
+            <div id="bb-start-y" class="border border-info rounded-right bg-info text-white float-left p-1 col text-nowrap">0</div>
+          </div>
+        </div>
+        <div class="row float-left m-1 p-0">
+          <div class="m-1 float-left row">
+            <div class="border border-info rounded-left bg-white text-info float-left p-1 col text-nowrap">end X</div>
+            <div id="bb-end-x" class="border border-info rounded-right bg-info text-white float-left p-1 col">0</div>
+          </div>
+          <div class="m-1 float-left row">
+            <div class="border border-info rounded-left bg-white text-info float-left p-1 col text-nowrap">end Y</div>
+            <div id="bb-end-y" class="border border-info rounded-right bg-info text-white float-left p-1 col text-nowrap">0</div>
+          </div>
+        </div>
+        <div class="row float-left m-1 p-0">
+          <div class="m-1 float-left row">
+            <div class="border border-info rounded-left bg-white text-info float-left p-1 col text-nowrap">width</div>
+            <div id="bb-width" class="border border-info rounded-right bg-info text-white float-left p-1 col">0</div>
+          </div>
+          <div class="m-1 float-left row">
+            <div class="border border-info rounded-left bg-white text-info float-left p-1 col text-nowrap">height</div>
+            <div id="bb-height" class="border border-info rounded-right bg-info text-white float-left p-1 col text-nowrap">0</div>
+          </div>
+        </div>
+      </div>
+
     </form>
     
   </div>
+</div>
+<div id="json-viewer" class="card m-2 p-2">
 
 </div>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/i18n/defaults-*.min.js"></script>

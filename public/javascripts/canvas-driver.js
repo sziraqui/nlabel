@@ -1,12 +1,18 @@
+/**
+ * Global variables and constants
+ */
 var canvas, c;
 var mCanvas, mC;
 const picDir = '/data/pictures/';
 var shouldDraw = false;
-var currX = 0;
-var currY = 0;
-var currW = 0;
-var currH = 0;
-
+var startX = 0;
+var startY = 0;
+var endX = 0;
+var endY = 0;
+var items = [];
+/**
+ * Event handlers
+ */
 window.onload = function() {
     
     canvas = document.getElementById('selection-layer');
@@ -17,15 +23,51 @@ window.onload = function() {
 
     renderImage();
 
-    c.strokeStyle = "blue";
+    c.strokeStyle = "red";
     c.fillStyle = "blue";
     c.globalAlpha = 0.5;
-    mC.strokeStyle = "red";
+    mC.strokeStyle = "green";
     canvas.onmousedown = mouseHold;
     canvas.onmousemove = mouseMove;
     canvas.onmouseup = mouseRelease;
+
+    /**
+     * Handle clicks
+     */
+    document.getElementById('bb-save-btn').onclick = saveItem;
 }
 
+
+function saveItem() {
+    saveBB(startX, startY, endX - startX, endY - startY);
+    
+    var classname = getCurrClass();
+    var labels = getLabels();
+    const item = {
+        location: {
+            startX: startX,
+            startY: startY,
+            endX: endX,
+            endY: endY
+        },
+        classname: classname,
+        labels: labels
+    }
+    items.push(item);
+    saveAnnotation();
+
+}
+
+function saveAnnotation(output) {
+    var imgname = document.getElementById('img-name').innerHTML;
+    output = {
+        filename: imgname,
+        annotes: items
+    }
+    
+    var jsonViewer = document.getElementById('json-viewer');
+    jsonViewer.innerHTML = JSON.stringify(output, null, 4);
+}
 
 function renderImage() {
     console.log('rendering image');
@@ -35,13 +77,13 @@ function renderImage() {
         image.src = picDir + name;
         var x = 0;
         var y = 0;
-        var width = mCanvas.width;
-        var height = mCanvas.height;
+        var width = mC.canvas.width;
+        var height = mC.canvas.height;
 
         image.onload = function() {
             mC.drawImage(image, x, y, width, height);
             console.log('Image rendered successfully');
-            document.getElementById('log-1').innerHTML = `I/canvas: Height: ${mCanvas.height} Width: ${mCanvas.width}`;
+            console.log(`I/canvas: Height: ${mCanvas.height} Width: ${mCanvas.width}`);
         };
     }
 }
@@ -50,9 +92,9 @@ function renderImage() {
 function mouseHold(event) {
     shouldDraw = true;
     var pos = getMousePos(event);
-    currX = pos.x;
-    currY = pos.y;
-    document.getElementById('log-0').innerHTML = `currX ${currX} currY ${currY}`;
+    startX = pos.x;
+    startY = pos.y;
+    console.log(`currX ${startX} currY ${startY}`);
 
 }
 
@@ -62,10 +104,11 @@ function mouseMove(event) {
     var prevY = 0;
     if(shouldDraw) {
        var pos = getMousePos(event);
-       currW = (pos.x - currX);
-       currH = (pos.y - currY);
+       endX =  pos.x;
+       endY = pos.y;
        console.log(`posx ${pos.x} posy ${pos.y}`);
-       drawSelection(currX, currY, currW, currH);
+       drawSelection(startX, startY, endX - startX, endY - startY);
+       showBBInfo();
     }
 }
 
@@ -73,27 +116,49 @@ function mouseMove(event) {
 function mouseRelease(event) {
     shouldDraw = false;
     var pos = getMousePos(event);
-    var w = (pos.x - currX);
-    var h = (pos.y - currY);
-    document.getElementById('log-2').innerHTML = `posx ${pos.x} posy ${pos.y}`;
-    drawBB(currX, currY, w, h);
+    endX =  pos.x;
+    endY = pos.y;
+    console.log(`posx ${pos.x} posy ${pos.y}`);
+    drawBB(startX, startY, endX - startX, endY - startY);
+    showBBInfo();
 }
 
+
+function showBBInfo(){
+    document.getElementById('bb-start-x').innerHTML = startX;
+    document.getElementById('bb-start-y').innerHTML = startY;
+    document.getElementById('bb-end-x').innerHTML = endX;
+    document.getElementById('bb-end-y').innerHTML = endY;
+    document.getElementById('bb-width').innerHTML = Math.abs(endX - startX);
+    document.getElementById('bb-height').innerHTML = Math.abs(endY - startY);
+}
+
+
 function drawSelection(x, y, w, h) {
-    clearCanvas();
+    clearCanvas(c);
     c.fillRect(x, y, w, h);
 }
 
 
 function drawBB(x, y, w, h) {
-    clearCanvas();
-    mC.rect(x, y, w, h);
-    mC.stroke();    
+    clearCanvas(c);
+    c.globalAlpha = 1;
+    c.rect(x, y, w, h);
+    c.stroke();    
+    c.globalAlpha = 0.5;
 }
 
-function clearCanvas() {
 
-    c.clearRect(0, 0, 1280, 720);
+function saveBB(x, y, w, h) {
+    clearCanvas(c);
+    mC.rect(x, y, w, h);
+    mC.stroke();
+}
+
+
+function clearCanvas(context) {
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    context.beginPath();
 }
 
 
@@ -103,4 +168,24 @@ function getMousePos(event) {
       x: event.clientX - rect.left,
       y: event.clientY - rect.top
     };
+}
+
+
+function getCurrClass() {
+    var classname = document.getElementById('data-classname').value;
+}
+
+function getLabels() {
+    var labels = [];
+    var labelNodes = document.getElementsByName('label-container');
+    for(var i = 0; i < labelNodes.length; i++) {
+        var name = labelNodes[i].getElementsByClassName('data-label-name')[0].innerHTML;
+        var val = labelNodes[i].getElementsByClassName('data-label-value')[0].value;
+        label = {
+            name: name,
+            value: val
+        }
+        labels.push(label);
+    }
+    return labels;
 }
