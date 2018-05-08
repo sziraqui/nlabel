@@ -38,9 +38,14 @@
 
 <div class="gallery-view">
 
-  <canvas class="main-view card" id="artboard" width="{{canvas.width}}" height="{{canvas.height}}">
-    
-  </canvas>
+  <div class="main-view card" style="position:relative" id="artboard" width="{{canvas.width}}" height="{{canvas.height}}">
+    <canvas id="main-layer" width="{{canvas.width}}" height="{{canvas.height}}" style="position:absolute; :0; left:0; z-index:1;">
+
+    </canvas>
+    <canvas id="selection-layer" width="{{canvas.width}}" height="{{canvas.height}}" style="position:absolute; top:0; left:0; z-index:2;">
+
+    </canvas>
+  </div>
 
   <div class="side-view card">
 
@@ -83,6 +88,9 @@
     <!-- list of labels END -->
       <button class="btn btn-outline-primary btn-sm mb-1" type="button">+ Label</button>
       <button class="btn btn-block btn-primary btn-sm mb-1 " type="submit">Save this object</button>
+      <span id="log-0"></span><br>
+      <span id="log-1"></span><br>
+      <span id="log-2"></span>
     </form>
     
   </div>
