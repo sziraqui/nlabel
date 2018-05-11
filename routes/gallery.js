@@ -37,12 +37,7 @@ imageList = getImagesByDir(config.rootDir, (images) => {
     });
 
 router.get('/', (req, res, next) => {
-    imgPtr = -1;
-    getNextImage((imageProps) => {
-        substitute.image = imageProps;
-        res.render('gallery', substitute);
-    });    
-    
+    res.redirect('/gallery/0');
 });
 
 
