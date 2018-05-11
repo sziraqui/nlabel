@@ -128,40 +128,8 @@
   </div>
 </div>
 <form action="/gallery/save-all" method="POST">
-  <textarea id="json-viewer" name="annotesData" class="container-fluid m-2 p-2" style="overflow:hidden; height:auto;">
-  [
-    {
-        "filename": "satya-1.jpg",
-        "annotes": [
-            {
-                "location": {
-                    "startX": 713,
-                    "startY": 41,
-                    "endX": 1007,
-                    "endY": 274
-                },
-                "labels": [
-                    {
-                        "name": "speed",
-                        "value": null
-                    },
-                    {
-                        "name": "color",
-                        "value": null
-                    },
-                    {
-                        "name": "brand",
-                        "value": null
-                    },
-                    {
-                        "name": "wheels",
-                        "value": null
-                    }
-                ]
-            }
-        ]
-    }
-]
+  <textarea id="json-viewer" name="annotesData" class="container-fluid m-2 p-2" style="overflow-y:auto; height:auto;">
+  
   </textarea>
   <input type="submit" id="submit-save-all" class="hidden">
 </form>

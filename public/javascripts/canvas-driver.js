@@ -4,13 +4,13 @@
 var canvas, c;
 var mCanvas, mC;
 const picDir = '/data/pictures/';
+var currImg;
 var shouldDraw = false;
 var startX = 0;
 var startY = 0;
 var endX = 0;
 var endY = 0;
-var items = [];
-var output = [];
+var output = {};
 /**
  * Event handlers
  */
@@ -31,6 +31,7 @@ window.onload = function() {
     mCanvas.addEventListener('imageRendered', redrawBBs);
     console.log('I/canvas: imageRendered event added');
     renderImage(mCanvas);
+  
     console.log('I/canvas: image rendered');
     canvas.onmousedown = mouseHold;
     canvas.onmousemove = mouseMove;
@@ -51,10 +52,10 @@ window.onload = function() {
 
 function saveItem() {
     saveBB(startX, startY, endX - startX, endY - startY);
-    
+    console.log('saveItem: start saving');
     var classname = getCurrClass();
     var labels = getLabels();
-    const item = {
+    var item = {
         location: {
             startX: startX,
             startY: startY,
@@ -64,21 +65,12 @@ function saveItem() {
         classname: classname,
         labels: labels
     }
-    items.push(item);
-    saveAnnotation(output);
-
-}
-
-
-function saveAnnotation(output) {
-    var imgname = document.getElementById('img-name').innerHTML;
-    const data = {
-        filename: imgname,
-        annotes: items
-    }
-    output.push(data);
+    console.log('output:', JSON.stringify(output, null, 4));
+    output.annotes.push(item);
+    console.log('saveItem: end saving');
     var jsonViewer = document.getElementById('json-viewer');
-    jsonViewer.innerHTML = JSON.stringify(output, null, 4);
+    jsonViewer.value = JSON.stringify(output);
+
 }
 
 
@@ -86,9 +78,9 @@ function renderImage(target) {
     console.log('rendering image');
     var event = new Event('imageRendered');
     var image = new Image();
-    var name = document.getElementById('img-name').innerHTML;
-    if(typeof name != 'undefined') {
-        image.src = picDir + name;
+    currImg = document.getElementById('img-name').innerHTML;
+    if(typeof currImg != 'undefined') {
+        image.src = picDir + currImg;
         var imgW = parseInt(document.getElementById('img-true-w').innerHTML);
         var imgH = parseInt(document.getElementById('img-true-h').innerHTML);
         image.onload = function() {
@@ -211,44 +203,38 @@ function getLabels() {
 
 
 function redrawBBs() {
-    var jsonStr = document.getElementById('json-viewer').innerHTML;
+
+    output = {
+        filename: currImg,
+        annotes: []
+    };
+
+    var jsonStr = document.getElementById('json-viewer').value;
     if(jsonStr == "") return;
-    var data = {};
+    var data;
     try {
         data = JSON.parse(jsonStr);
     } catch (error) {
         console.log('E/onResume:', error);
+        data = {};
     }
-    output = data;
-    var imgname = document.getElementById('img-name').innerHTML;
-
-    var drawList = currImageAnnotes(data, imgname);
-    console.log('drawList')
-    if(Array.isArray(drawList) && typeof drawList != 'undefined'){
-        for(var i = 0; i < drawList.length; i++) {
-            var bb = drawList[i].location;
+    if (data.hasOwnProperty('filename') && data.hasOwnProperty('annotes')) {
+        output = data;
+    }
+    if(currImg != output.filename) return false;
+    if(Array.isArray(output.annotes) && typeof output.annotes != 'undefined'){
+        for(var i = 0; i < output.annotes.length; i++) {
+            var bb = output.annotes[i].location;
             console.log('I/onResume: redrawing canvas...');
             if(typeof bb != 'undefined'){
                 saveBB(bb.startX, bb.startY,
                        bb.endX - bb.startX, bb.endY - bb.startY);
-                items.push(drawList[i]);
-                
             }
         }
     }
+    return true;
 }
 
-
-function currImageAnnotes(data, imgname) {
-
-    for(var i = 0; i < data.length; i++) {
-        if(data[i].filename == imgname) {
-            
-            return data[i].annotes;
-        }
-    }
-    return [];
-}
 
 function nextImage() {
     window.location.href = "/gallery/next-image";
