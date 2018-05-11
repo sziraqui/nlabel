@@ -44,6 +44,7 @@ window.onload = function() {
     document.getElementById("tb-previous").onclick = previousImage;
     document.getElementById("tb-save-all").onclick = saveAll;
     document.getElementById("tb-discard-all").onclick = discardAll;
+    document.getElementById("set-class-btn").onclick = onClassChange;
 
 }
 
@@ -272,5 +273,6 @@ function discardAll() {
 
 
 function onClassChange() {
-    
+    var classname = document.getElementById('data-classname').value;
+    window.location.href = "/gallery/" + classname;
 }

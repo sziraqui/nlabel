@@ -60,10 +60,16 @@ router.get('/previous-image', (req, res, next) => {
 });
 
 
-router.get('/:ptr', (req, res, next) => {
-    var imgPtr = parseInt(req.params.ptr);
-    currClass = substitute.classList[0];
-    res.redirect(`/gallery/${imgPtr}/${currClass}`);
+router.get('/:param', (req, res, next) => {
+    var ptr = parseInt(req.params.param);
+    if(isNaN(ptr)) {
+        var classname = req.params.param;
+        res.redirect(`/gallery/${imgPtr}/${classname}`);
+    } else {
+        currClass = substitute.classList[0];
+        res.redirect(`/gallery/${imgPtr}/${currClass}`);
+    }
+
 });
 
 
@@ -71,7 +77,10 @@ router.get('/:ptr/:classname', (req, res, next) => {
    
     var currClass = findClassByName(config.classes, req.params.classname);
     if (currClass == null) {
-        res.redirect('/gallery');
+        currClass = {
+            classname: classname,
+            labels: []
+        }
     } else {
         imgPtr = Number(req.params.ptr) - 1;
         getNextImage((imageProps) => {
