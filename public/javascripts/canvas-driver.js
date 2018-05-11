@@ -15,7 +15,7 @@ var output = [];
  * Event handlers
  */
 window.onload = function() {
-    
+    console.log('I/canvas: onload');
     canvas = document.getElementById('selection-layer');
     c = canvas.getContext('2d');
 
@@ -26,11 +26,12 @@ window.onload = function() {
     c.fillStyle = "blue";
     c.globalAlpha = 0.5;
     mC.strokeStyle = "green";
-    
+    console.log('I/canvas: Both canvases ready');
     // custom event triggered after image is rendered on main canvas
     mCanvas.addEventListener('imageRendered', redrawBBs);
+    console.log('I/canvas: imageRendered event added');
     renderImage(mCanvas);
-
+    console.log('I/canvas: image rendered');
     canvas.onmousedown = mouseHold;
     canvas.onmousemove = mouseMove;
     canvas.onmouseup = mouseRelease;
@@ -39,7 +40,11 @@ window.onload = function() {
      * Handle clicks
      */
     document.getElementById('bb-save-btn').onclick = saveItem;
-    document.getElementById('bb-save-all').onclick = saveAll;
+    document.getElementById("tb-next").onclick = nextImage;
+    document.getElementById("tb-previous").onclick = previousImage;
+    document.getElementById("tb-save-all").onclick = saveAll;
+    document.getElementById("tb-discard-all").onclick = discardAll;
+
 }
 
 
@@ -73,11 +78,6 @@ function saveAnnotation(output) {
     output.push(data);
     var jsonViewer = document.getElementById('json-viewer');
     jsonViewer.innerHTML = JSON.stringify(output, null, 4);
-}
-
-
-function saveAll(){
-    $('#submit-save-all').click();
 }
 
 
@@ -247,4 +247,30 @@ function currImageAnnotes(data, imgname) {
         }
     }
     return [];
+}
+
+function nextImage() {
+    window.location.href = "/gallery/next-image";
+    return true; // to satisfy a bug in chrome
+}
+
+
+function previousImage() {
+    window.location.href = "/gallery/previous-image";
+    return true; // to satisfy a bug in chrome
+}
+
+
+function saveAll(){
+    $("#submit-save-all").click();
+}
+
+
+function discardAll() {
+
+}
+
+
+function onClassChange() {
+    
 }

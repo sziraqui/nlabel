@@ -20,17 +20,17 @@
 
 <div class="btn-toolbar float-right" role="toolbar">
   <div class="btn-group mr-4" role="group" aria-label="First group">
-    <button type="button" class="btn btn-secondary">Undo</button>
-    <button type="button" class="btn btn-secondary">Redo</button>
-    <button type="button" class="btn btn-secondary">Reset box</button>
+    <button type="button" class="btn btn-secondary" id="tb-undo">Undo</button>
+    <button type="button" class="btn btn-secondary" id="tb-redo">Redo</button>
+    <button type="button" class="btn btn-secondary" id="tb-reset-box">Reset box</button>
   </div>
   <div class="btn-group mr-2" role="group" aria-label="Second group">
-    <button type="button" class="btn btn-success" id="bb-save-all">Save All</button>
-    <button type="button" class="btn btn-danger">Discard All</button>
+    <button type="button" class="btn btn-success" id="tb-save-all">Save All</button>
+    <button type="button" class="btn btn-danger" id="tb-discard-all">Discard All</button>
   </div>
   <div class="btn-group ml-2" role="group" aria-label="Second group">
-    <button type="button" class="btn btn-outline-primary">Previous</button>
-    <button type="button" class="btn btn-outline-primary">Next</button>
+    <button type="button" class="btn btn-outline-primary" id="tb-previous">Previous</button>
+    <button type="button" class="btn btn-outline-primary" id="tb-next">Next</button>
   </div>
 </div>
 </nav>
@@ -168,5 +168,4 @@
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/i18n/defaults-*.min.js"></script>
 <script src="/javascripts/canvas-driver.js"></script>

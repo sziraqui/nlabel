@@ -42,6 +42,31 @@ router.get('/', (req, res, next) => {
     
 });
 
+
+router.get('/next-image', (req, res, next) => {
+    imgPtr = (imgPtr + 1) % imageList.length;
+    res.redirect(`/gallery/${imgPtr}`);
+});
+
+
+router.get('/previous-image', (req, res, next) => {
+    if (imgPtr <= 0) {
+        imgPtr = 0;
+    } else {
+        imgPtr = imgPtr - 1;
+    }
+    
+    res.redirect(`/gallery/${imgPtr}`);
+});
+
+
+router.get('/:ptr', (req, res, next) => {
+    var imgPtr = parseInt(req.params.ptr);
+    currClass = substitute.classList[0];
+    res.redirect(`/gallery/${imgPtr}/${currClass}`);
+});
+
+
 router.get('/:ptr/:classname', (req, res, next) => {
    
     var currClass = findClassByName(config.classes, req.params.classname);
@@ -63,22 +88,6 @@ router.post('/save-all', (req, res, next) => {
     res.sendStatus(200);
 });
 
-
-router.post('/', jsonParser, (req, res, next) => {
-    var payload = JSON.parse(req.body.payload);
-    console.log("D/router.post: payload", JSON.stringify(payload));
-    tags = payload.tags;
-    console.log("D/router.post: tags", JSON.stringify(tags));
-    var labels = payload.labels;
-    var data = json2csv(tags, labels); 
-    var fileName = 'test.csv';
-
-    writeCSV(fileName, data, (file) => {
-        fileName = file;
-        res.download(path.join(tempDir, fileName));
-    });
-
-});
 
 function getNextImage(callback) {
     imgPtr++;
