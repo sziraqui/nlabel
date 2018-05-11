@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+const fs = require('fs');
 const Jimp = require('jimp');
 
 const writeCSV = require('../tools.js').writeCSV;
@@ -7,8 +8,10 @@ const json2csv = require('../tools.js').json2csv;
 const tempDir = require('../tools.js').tempDir;
 var parseTagsNlabels = require('../tools.js').parseTagsNlabels;
 var getImagesByDir = require('../tools.js').getImagesByDir;
-var picDir = require('../tools.js').picDir;
+const picDir = require('../tools.js').picDir;
+const dataDir = require('../tools.js').dataDir;
 var config = require('../public/data/config.json');
+var annotations = require('../public/data/annotations.json');
 
 var router = express.Router();
 var jsonParser = express.json();
@@ -93,8 +96,26 @@ router.get('/:ptr/:classname', (req, res, next) => {
 
 
 router.post('/save-all', (req, res, next) => {
-    console.log('I/saveAll:', req.body.annotesData);
-    res.sendStatus(200);
+    var data = req.body.annotesData;
+    try {
+        data = JSON.parse(data);
+    } catch (error) {
+        console.log('E/save-all:', error.message);
+        data = null;
+    }
+    if(data != null){
+        annotations.annotes.push(data);
+        fs.writeFile(path.join(dataDir, 'annotations.json'), JSON.stringify(annotations, null, 4), (err) => {
+            if (err) {
+                console.log('E/save-all:', err.message);
+                res.sendStatus(500);
+            } else {
+                res.sendStatus(200);
+            }
+        });
+    } else {
+        res.sendStatus(500);
+    }
 });
 
 
