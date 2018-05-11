@@ -64,5 +64,4 @@ typings/
 temp
 
 # public data directory
-public/data/pictures/
-public/data/outputs/
+public/data
