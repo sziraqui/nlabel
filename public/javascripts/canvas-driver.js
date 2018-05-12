@@ -42,15 +42,32 @@ window.onload = function() {
     /**
      * Handle clicks
      */
-    document.getElementById('bb-save-btn').onclick = saveItem;
+    document.getElementById("bb-save-btn").onclick = saveItem;
     document.getElementById("tb-next").onclick = nextImage;
     document.getElementById("tb-previous").onclick = previousImage;
     document.getElementById("tb-save-all").onclick = saveAll;
     document.getElementById("tb-discard-all").onclick = discardAll;
-    document.getElementById("set-class-btn").onclick = onClassChange;
     document.getElementById("tb-undo").onclick = undo;
     document.getElementById("tb-redo").onclick = redo;
 
+    /**
+     * Handle text change. Page will reload with new params
+     * defined by changed text
+     */
+    document.getElementById("data-classname").onchange = onClassChange;
+
+    /**
+     * Clear text on focus for easier selection of next item
+     */
+    document.getElementById("data-classname").onfocus = function() {
+        this.value = "";
+    };
+    var labelInps = document.getElementsByClassName("data-label-value");
+    for (var i = 0; i < labelInps.length; i++) {
+        labelInps[i].onfocus = function() {
+            this.value = "";
+        }
+    }
 }
 
 
@@ -270,7 +287,7 @@ function discardAll() {
 
 function onClassChange() {
     var classname = document.getElementById('data-classname').value;
-    window.location.href = "/gallery/" + classname;
+    saveAll();
 }
 
 

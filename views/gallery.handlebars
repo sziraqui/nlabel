@@ -51,8 +51,7 @@
     <form action="#" method="POST">
       <!-- Class selection -->
       <div class="form-row">
-        <div class="col">
-        <input id="data-classname" class="form-control" list="class-list" name="class" value="{{#if currClass.classname}}{{currClass.classname}}{{/if}}">
+        <input id="data-classname" class="form-control m-2" list="class-list" name="class" value="{{#if currClass.classname}}{{currClass.classname}}{{/if}}" placeholder="set class">
         <datalist id="class-list">
           <!-- list of class names -->
           {{#each classList}}
@@ -60,11 +59,8 @@
           {{/each}}
           <!-- list of class names END -->
         </datalist>
-        </div>
-        <div class="col">
-          <button class="btn btn-primary mb-2" id="set-class-btn" type="button">Set</button>
-        </div>
       </div>
+    
       <!-- Class selection END -->
       <!-- list of labels for selected class-->
       {{#with currClass}}
