@@ -27,7 +27,8 @@ var substitute = {
         },
     image: {},
     classList: getClassList(config.classes),
-    currClass : config.classes[0]
+    currClass : config.classes[0],
+    currFileData: ""
 }
 
 
@@ -84,6 +85,8 @@ router.get('/:ptr/:classname', (req, res, next) => {
         getNextImage((imageProps) => {
             substitute.image = imageProps;
             substitute.currClass = currClass;
+            substitute.currFileData = JSON.stringify(getDataForImage(imageList[imgPtr]));
+            console.log("I/GET ptr/classname: ", JSON.stringify(substitute, null, 4));
             res.render('gallery', substitute);
         });
     }
@@ -155,9 +158,18 @@ function getClassList(classes) {
     return list;
 }
 
-function findImageByName(imageName) {
 
+function getDataForImage(imgName) {
+    for(var i = 0; i < annotations.annotes.length; i++) {
+        if(imgName == annotations.annotes[i].filename)
+            return annotations.annotes[i];
+    }
+    return {
+        filename: imgName,
+        annotes: []
+    }
 }
+
 
 function findClassByName(classes, name) {
     console.log('classes', classes);
