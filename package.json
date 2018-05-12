@@ -18,6 +18,9 @@
     "mime-types": "^2.1.18",
     "morgan": "~1.9.0"
   },
+  "nodemonConfig": {
+    "ignore": ["public/data/*.json", "public/samples/*", "public/data/outputs/*.json", "public/javascripts/*.js"]
+  },
   "author": "@sziraqui",
   "license": "GPL-3.0"
 }
