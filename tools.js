@@ -75,11 +75,7 @@ function parseTagsNlabels(fileDir, fileList, tagList) {
 
 
 function getImagesByDir(dir, callback) {
-    try {
-        symlinkError = fs.symlinkSync(dir, picDir);
-    } catch (symlinkError) {
-        console.log('W/getImagesByDir:', symlinkError.message);
-    }
+    
     imageList = [];
     fs.readdir(dir, (err, items) => {
         if(err) {
@@ -98,11 +94,27 @@ function getImagesByDir(dir, callback) {
 }
 
 
+function extnLessName(filename) {
+    return path.basename(filename, path.extname(filename));
+}
+
+
+function linkUserDir(target, source) {
+    // overrides existing
+    var temp = source + '.bak';
+    fs.symlinkSync(target, temp, 'dir');
+    fs.renameSync(temp, source);
+}
+
+
 exports.getSafeFileName = getSafeFileName;
 exports.json2csv = json2csv;
 exports.writeCSV = writeCSV;
 exports.parseTagsNlabels = parseTagsNlabels;
 exports.getImagesByDir = getImagesByDir;
+exports.linkUserDir = linkUserDir;
+exports.extnLessName = extnLessName;
 exports.dataDir = dataDir;
 exports.tempDir = tempDir;
 exports.outDir = outDir;
+exports.picDir = picDir;

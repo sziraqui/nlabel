@@ -3,7 +3,9 @@ var router = express.Router();
 var fs = require('fs');
 var path = require('path');
 
-var dataDir = require('../tools.js').dataDir;
+var linkUserdir = require('../tools.js').linkUserDir;
+const dataDir = require('../tools.js').dataDir;
+const picDir = require('../tools.js').picDir;
 var config = require(path.join(dataDir, 'config.json'));
 
 // template context for Handlebars
@@ -17,7 +19,7 @@ substitute = {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  
+  config = require(path.join(dataDir, 'config.json'));
   res.render('index', substitute);
 });
 
@@ -34,6 +36,7 @@ router.post('/', function(req, res, next) {
       console.log('E/updateConfig:', err.message);
       res.sendStatus(500);
     } else {
+      linkUserdir(config.rootDir, picDir);
       res.sendStatus(200);
     }
   });

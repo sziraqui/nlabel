@@ -8,6 +8,7 @@ const dataDir = require('../tools.js').dataDir;
 var config = require('../public/data/config.json');
 var annotations = require('../public/data/annotations.json');
 const getImagesByDir = require('../tools.js').getImagesByDir;
+const extnLessName = require('../tools.js').extnLessName;
 
 
 var router = express.Router();
@@ -18,26 +19,30 @@ var imgPtr = 0;
 var imageList = [];
 
 // template context for Handlerbars
-var substitute = {
-    dir: config.rootDir,
-    canvas: {
-        width: config.imageSize.width,
-        height: config.imageSize.height
-        },
-    image: {},
-    classList: getClassList(config.classes),
-    currClass : config.classes[0],
-    currFileData: ""
-}
+var substitute = {};
 
 
 /* GET images directory */
-imageList = getImagesByDir(config.rootDir, (images) => {
-    imageList = images;
-    });
 
 router.get('/', (req, res, next) => {
-    res.redirect('/gallery/0');
+    config = require('../public/data/config.json');
+    annotations = require('../public/data/annotations.json');
+    imageList = getImagesByDir(picDir, (images) => {
+        imageList = images;
+        substitute = {
+            dir: config.rootDir,
+            canvas: {
+                width: config.imageSize.width,
+                height: config.imageSize.height
+                },
+            image: {},
+            classList: getClassList(config.classes),
+            currClass : config.classes[0],
+            currFileData: ""
+        }
+        res.redirect('/gallery/0');
+    });
+    
 });
 
 
@@ -84,7 +89,7 @@ router.get('/:ptr/:classname', (req, res, next) => {
         getNextImage((imageProps) => {
             substitute.image = imageProps;
             substitute.currClass = currClass;
-            substitute.currFileData = JSON.stringify(getDataForImage(imageList[imgPtr]));
+            substitute.currFileData = getDataForImage(imageList[imgPtr]);
             console.log("I/GET ptr/classname: ", JSON.stringify(substitute, null, 4));
             res.render('gallery', substitute);
         });
@@ -101,8 +106,16 @@ router.post('/save-all', (req, res, next) => {
         data = null;
     }
     if(data != null){
-        annotations.annotes.push(data);
-        fs.writeFile(path.join(dataDir, 'annotations.json'), JSON.stringify(annotations, null, 4), (err) => {
+        if(!annotations.annotedFiles.includes(data.filename)){
+            annotations.annotedFiles.push(data.filename);
+            fs.writeFile(path.join(dataDir, 'annotations.json'), JSON.stringify(annotations, null, 4), (err) => {
+                if(err) console.log('E/save-all:', err.message);
+            });
+        }
+
+        var dataFile = extnLessName(data.filename) + '.json';
+
+        fs.writeFile(path.join(dataDir, 'outputs', dataFile), JSON.stringify(data, null, 4), (err) => {
             if (err) {
                 console.log('E/save-all:', err.message);
                 res.sendStatus(500);
@@ -124,7 +137,7 @@ function getNextImage(callback) {
     }
     if (imgPtr < imageList.length) {
         // read image[i] and return its props
-        var image = new Jimp(path.join(config.rootDir, imageList[imgPtr]), (err, image) => {
+        var image = new Jimp(path.join(picDir, imageList[imgPtr]), (err, image) => {
             if (err) {
                 console.log('E/getNextImage:', err.message);
                 return getNextImage(callback);
@@ -160,14 +173,14 @@ function getClassList(classes) {
 
 
 function getDataForImage(imgName) {
-    for(var i = 0; i < annotations.annotes.length; i++) {
-        if(imgName == annotations.annotes[i].filename)
-            return annotations.annotes[i];
+    for(var i = 0; i < annotations.annotedFiles.length; i++) {
+        if(imgName == annotations.annotedFiles[i])
+            return fs.readFileSync(path.join(dataDir, 'outputs', extnLessName(annotations.annotedFiles[i]) + '.json'));
     }
-    return {
+    return JSON.stringify({
         filename: imgName,
         annotes: []
-    }
+    });
 }
 
 
