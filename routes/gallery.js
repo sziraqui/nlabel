@@ -48,7 +48,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/next-image', (req, res, next) => {
     imgPtr = (imgPtr + 1) % imageList.length;
-    res.redirect(`/gallery/${imgPtr}`);
+    res.redirect(`/gallery/${imgPtr}/${currClass}`);
 });
 
 
@@ -59,7 +59,7 @@ router.get('/previous-image', (req, res, next) => {
         imgPtr = imgPtr - 1;
     }
     
-    res.redirect(`/gallery/${imgPtr}`);
+    res.redirect(`/gallery/${imgPtr}/${currClass}`);
 });
 
 
@@ -85,12 +85,12 @@ router.get('/:ptr/:classname', (req, res, next) => {
             labels: []
         }
     } else {
-        imgPtr = Number(req.params.ptr) - 1;
+        imgPtr = parseInt(req.params.ptr) - 1;
         getNextImage((imageProps) => {
             substitute.image = imageProps;
             substitute.currClass = currClass;
             substitute.currFileData = getDataForImage(imageList[imgPtr]);
-            console.log("I/GET ptr/classname: ", JSON.stringify(substitute, null, 4));
+            
             res.render('gallery', substitute);
         });
     }
@@ -120,7 +120,7 @@ router.post('/save-all', (req, res, next) => {
                 console.log('E/save-all:', err.message);
                 res.sendStatus(500);
             } else {
-                res.sendStatus(200);
+                res.redirect(`/gallery/${imgPtr}/${currClass}`);
             }
         });
     } else {

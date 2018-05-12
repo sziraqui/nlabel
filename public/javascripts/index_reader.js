@@ -2,7 +2,7 @@
 function postConfigData() {
     var classes = readClasses();
     if (!isEmpty(classes)){
-        $('#configForm').append('<textarea name="newclasses">'+JSON.stringify(classes,null,2)+'</textarea>');
+        $('#configForm').append('<textarea name="newclasses" class="hidden">'+JSON.stringify(classes,null,2)+'</textarea>');
     }
     $('#configForm button[type="submit"]').click();
 }

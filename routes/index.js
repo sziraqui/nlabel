@@ -37,7 +37,7 @@ router.post('/', function(req, res, next) {
       res.sendStatus(500);
     } else {
       linkUserdir(config.rootDir, picDir);
-      res.sendStatus(200);
+      res.redirect('/gallery');
     }
   });
   
