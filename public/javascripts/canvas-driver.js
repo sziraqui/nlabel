@@ -11,6 +11,8 @@ var startY = 0;
 var endX = 0;
 var endY = 0;
 var output = {};
+var trash = [];
+
 /**
  * Event handlers
  */
@@ -46,6 +48,8 @@ window.onload = function() {
     document.getElementById("tb-save-all").onclick = saveAll;
     document.getElementById("tb-discard-all").onclick = discardAll;
     document.getElementById("set-class-btn").onclick = onClassChange;
+    document.getElementById("tb-undo").onclick = undo;
+    document.getElementById("tb-redo").onclick = redo;
 
 }
 
@@ -211,7 +215,9 @@ function redrawBBs() {
     };
 
     var jsonStr = document.getElementById('json-viewer').value;
-    if(jsonStr == "") return;
+    if(jsonStr == "") {
+        return;
+    }
     var data;
     try {
         data = JSON.parse(jsonStr);
@@ -255,11 +261,33 @@ function saveAll(){
 
 
 function discardAll() {
-
+    output.annotes = [];
+    document.getElementById('json-viewer').value = JSON.stringify(output);
+    clearCanvas(mC);
+    renderImage(mCanvas);
 }
 
 
 function onClassChange() {
     var classname = document.getElementById('data-classname').value;
     window.location.href = "/gallery/" + classname;
+}
+
+
+function undo() {
+    if (output.annotes.length > 0) {
+        trash.push(output.annotes.pop());
+        document.getElementById('json-viewer').value = JSON.stringify(output);
+        clearCanvas(mC);
+        renderImage(mCanvas);
+    }
+}
+
+function redo() {
+    if(trash.length > 0) {
+        output.annotes.push(trash.pop());
+        document.getElementById('json-viewer').value = JSON.stringify(output);
+        clearCanvas(mC);
+        renderImage(mCanvas);
+    }
 }
