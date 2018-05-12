@@ -22,6 +22,7 @@ function removeClass() {
     $('#class-ul').empty();
 }
 
+
 function nameClasses(names) {
     var classUl = document.getElementById("class-ul");
     for (var i = 0; i < names.length;) {
@@ -33,6 +34,7 @@ function nameClasses(names) {
         }
     }
 }
+
 
 function addLabelListItem(clickedItem) {
     var labelUl = clickedItem.parentNode.parentNode.getElementsByClassName('label-ul');

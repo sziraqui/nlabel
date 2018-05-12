@@ -183,6 +183,7 @@ function getCurrClass() {
     var classname = document.getElementById('data-classname').value;
 }
 
+
 function getLabels() {
     var labels = [];
     var labelNodes = document.getElementsByName('label-container');

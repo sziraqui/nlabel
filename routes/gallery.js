@@ -3,22 +3,21 @@ var path = require('path');
 const fs = require('fs');
 const Jimp = require('jimp');
 
-const writeCSV = require('../tools.js').writeCSV;
-const json2csv = require('../tools.js').json2csv;
-const tempDir = require('../tools.js').tempDir;
-var parseTagsNlabels = require('../tools.js').parseTagsNlabels;
-var getImagesByDir = require('../tools.js').getImagesByDir;
 const picDir = require('../tools.js').picDir;
 const dataDir = require('../tools.js').dataDir;
 var config = require('../public/data/config.json');
 var annotations = require('../public/data/annotations.json');
+const getImagesByDir = require('../tools.js').getImagesByDir;
+
 
 var router = express.Router();
 var jsonParser = express.json();
 
+// Pointer maintains current file index
 var imgPtr = 0;
 var imageList = [];
 
+// template context for Handlerbars
 var substitute = {
     dir: config.rootDir,
     canvas: {
@@ -149,6 +148,7 @@ function getNextImage(callback) {
         return getNextImage(callback);
     }
 }
+
 
 function getClassList(classes) {
     list = [];

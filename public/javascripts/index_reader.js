@@ -37,8 +37,7 @@ function readClasses() {
             if (labelName == '') {
                 continue;
             }
-            console.log('pass4 %o',labelLis[j]);
-            console.log('labelName '+labelName);
+           
             // get value of .label-value-input  
             var defaultValues = labelLis[j].getElementsByClassName("label-value-input")[0].value;
             
@@ -82,4 +81,3 @@ function string2Array(str) {
 function isEmpty(ob) {
     return Object.keys(ob).length == 0;
 }
-

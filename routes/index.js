@@ -6,6 +6,7 @@ var path = require('path');
 var dataDir = require('../tools.js').dataDir;
 var config = require(path.join(dataDir, 'config.json'));
 
+// template context for Handlebars
 substitute = {
   title: 'NLabel',
   dir: config.rootDir,
