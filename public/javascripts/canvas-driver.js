@@ -99,7 +99,7 @@ function saveItem() {
     console.log('saveItem: end saving');
     var jsonViewer = document.getElementById('json-viewer');
     jsonViewer.value = JSON.stringify(output);
-
+    saveAll();
 }
 
 
@@ -307,7 +307,7 @@ function discardAll() {
 
 function onClassChange() {
     var classname = document.getElementById('data-classname').value;
-    saveAll();
+    window.location.href = "/gallery/" + classname;
 }
 
 
