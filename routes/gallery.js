@@ -9,6 +9,7 @@ var config = require('../public/data/config.json');
 var annotations = require('../public/data/annotations.json');
 const getImagesByDir = require('../tools.js').getImagesByDir;
 const extnLessName = require('../tools.js').extnLessName;
+const normalizeBox = require('../tools.js').normalizeBox;
 
 
 var router = express.Router();
@@ -115,6 +116,10 @@ router.post('/save-all', (req, res, next) => {
 
         var dataFile = extnLessName(data.filename) + '.json';
 
+        for(var i = 0; i < data.annotes.length; i++) {
+            data.annotes[i] = normalizeBox(data.annotes[i], data.ogSize, config.imageSize);
+        }
+
         fs.writeFile(path.join(dataDir, 'outputs', dataFile), JSON.stringify(data, null, 4), (err) => {
             if (err) {
                 console.log('E/save-all:', err.message);
@@ -177,10 +182,7 @@ function getDataForImage(imgName) {
         if(imgName == annotations.annotedFiles[i])
             return fs.readFileSync(path.join(dataDir, 'outputs', extnLessName(annotations.annotedFiles[i]) + '.json'));
     }
-    return JSON.stringify({
-        filename: imgName,
-        annotes: []
-    });
+    return "";
 }
 
 

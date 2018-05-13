@@ -107,6 +107,21 @@ function linkUserDir(target, source) {
 }
 
 
+function normalizeBox(item, ogSize, scaleSize) {
+    
+    var W = scaleSize.width / ogSize.width;
+    var H = scaleSize.height / ogSize.height;
+
+    item["scaled"] = {
+        startX: Math.round(item.location.startX * W),
+        startY: Math.round(item.location.startY * H),
+        endX: Math.round(item.location.endX * W),
+        endY: Math.round(item.location.endY * H)
+    }
+    return item;
+}
+
+
 exports.getSafeFileName = getSafeFileName;
 exports.json2csv = json2csv;
 exports.writeCSV = writeCSV;
@@ -114,6 +129,7 @@ exports.parseTagsNlabels = parseTagsNlabels;
 exports.getImagesByDir = getImagesByDir;
 exports.linkUserDir = linkUserDir;
 exports.extnLessName = extnLessName;
+exports.normalizeBox = normalizeBox;
 exports.dataDir = dataDir;
 exports.tempDir = tempDir;
 exports.outDir = outDir;

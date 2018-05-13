@@ -20,9 +20,11 @@ window.onload = function() {
     console.log('I/canvas: onload');
     canvas = document.getElementById('selection-layer');
     c = canvas.getContext('2d');
+    resizeCanvas(c);
 
     mCanvas = document.getElementById('main-layer');
     mC = mCanvas.getContext('2d');
+    resizeCanvas(mC);
 
     c.strokeStyle = "red";
     c.fillStyle = "blue";
@@ -76,6 +78,10 @@ function saveItem() {
     console.log('saveItem: start saving');
     var classname = getCurrClass();
     var labels = getLabels();
+    scale = {
+        width: document.getElementById('canvas-holder').clientWidth,
+        height: document.getElementById('canvas-holder').clientHeight
+    };
     var item = {
         location: {
             startX: startX,
@@ -83,11 +89,13 @@ function saveItem() {
             endX: endX,
             endY: endY
         },
+        
         classname: classname,
         labels: labels
     }
-    console.log('output:', JSON.stringify(output, null, 4));
+    item = normalizeBox(item, scale);
     output.annotes.push(item);
+    console.log('output:', JSON.stringify(output, null, 4));
     console.log('saveItem: end saving');
     var jsonViewer = document.getElementById('json-viewer');
     jsonViewer.value = JSON.stringify(output);
@@ -99,13 +107,17 @@ function renderImage(target) {
     console.log('rendering image');
     var event = new Event('imageRendered');
     var image = new Image();
-    currImg = document.getElementById('img-name').innerHTML;
-    if(typeof currImg != 'undefined') {
-        image.src = picDir + currImg;
-        var imgW = parseInt(document.getElementById('img-true-w').innerHTML);
-        var imgH = parseInt(document.getElementById('img-true-h').innerHTML);
+    currImg = {
+        name: document.getElementById('img-name').innerHTML,
+        width:  parseInt(document.getElementById('img-true-w').innerHTML),
+        height: parseInt(document.getElementById('img-true-h').innerHTML)
+    }
+    
+    if(typeof currImg.name != 'undefined') {
+        image.src = picDir + currImg.name;
+ 
         image.onload = function() {
-            mC.drawImage(image, 0, 0, imgW, imgH,
+            mC.drawImage(image, 0, 0, currImg.width, currImg.height,
                                 0, 0, mC.canvas.width, mC.canvas.height);
             
             target.dispatchEvent(event);
@@ -135,7 +147,7 @@ function mouseMove(event) {
        var pos = getMousePos(event);
        endX =  pos.x;
        endY = pos.y;
-       console.log(`posx ${pos.x} posy ${pos.y}`);
+       //console.log(`posx ${pos.x} posy ${pos.y}`);
        drawSelection(startX, startY, endX - startX, endY - startY);
        showBBInfo();
     }
@@ -225,30 +237,38 @@ function getLabels() {
 
 
 function redrawBBs() {
-
     output = {
-        filename: currImg,
+        filename: currImg.name,
+        ogSize: {
+            width: currImg.width,
+            height: currImg.height
+        },
         annotes: []
     };
-
     var jsonStr = document.getElementById('json-viewer').value;
     if(jsonStr == "") {
-        return;
+        document.getElementById('json-viewer').value = JSON.stringify(output);
     }
     var data;
     try {
         data = JSON.parse(jsonStr);
+        if (data.hasOwnProperty('filename') && data.hasOwnProperty('annotes')) {
+            output = data;
+        }
     } catch (error) {
         console.log('E/onResume:', error);
-        data = {};
     }
-    if (data.hasOwnProperty('filename') && data.hasOwnProperty('annotes')) {
-        output = data;
-    }
-    if(currImg != output.filename) return false;
+
+    if(currImg.name != output.filename) return false;
+
     if(Array.isArray(output.annotes) && typeof output.annotes != 'undefined'){
+        scale = {
+            width: document.getElementById('canvas-holder').clientWidth,
+            height: document.getElementById('canvas-holder').clientHeight
+        };
         for(var i = 0; i < output.annotes.length; i++) {
-            var bb = output.annotes[i].location;
+            var bb = denormalizeBox(output.annotes[i], scale);
+            
             console.log('I/onResume: redrawing canvas...');
             if(typeof bb != 'undefined'){
                 saveBB(bb.startX, bb.startY,
@@ -307,4 +327,37 @@ function redo() {
         clearCanvas(mC);
         renderImage(mCanvas);
     }
+}
+
+function resizeCanvas(context) {
+    context.canvas.width = document.getElementById("canvas-holder").offsetWidth;
+    context.canvas.height = document.getElementById("canvas-holder").offsetHeight;
+}
+
+
+function normalizeBox(item, scale) {
+    var location = JSON.parse(JSON.stringify(item.location)); //deep copy
+    var W = currImg.width/scale.width;
+    var H = currImg.height/scale.height;
+    item.location.startX = Math.round(location.startX * W);
+    item.location.startY = Math.round(location.startY * H);
+    item.location.endX = Math.round(location.endX * W);
+    item.location.endY = Math.round(location.endY * H);
+
+    return item;
+}
+
+
+function denormalizeBox(item, scale) {
+    
+    var location = JSON.parse(JSON.stringify(item.location)); //deep copy
+    var W = scale.width/currImg.width;
+    var H = scale.height/currImg.height;
+    console.log('denormalize scale',W, H);
+    location.startX = Math.round(item.location.startX*W);
+    location.startY = Math.round(item.location.startY*H);
+    location.endX = Math.round(item.location.endX*W);
+    location.endY = Math.round(item.location.endY*H);
+    console.log('denormalize', JSON.stringify(location));
+    return location;
 }

@@ -37,11 +37,11 @@
 
 <div class="gallery-view">
 
-  <div class="main-view card" style="position:relative" id="artboard" width="{{canvas.width}}" height="{{canvas.height}}">
-    <canvas id="main-layer" width="{{canvas.width}}" height="{{canvas.height}}" style="position:absolute; :0; left:0; z-index:1;">
+  <div id="canvas-holder" class="main-view card" style="position:relative" id="artboard">
+    <canvas id="main-layer" style="position:absolute; :0; left:0; z-index:1;">
 
     </canvas>
-    <canvas id="selection-layer" width="{{canvas.width}}" height="{{canvas.height}}" style="position:absolute; top:0; left:0; z-index:2;">
+    <canvas id="selection-layer"  style="position:absolute; top:0; left:0; z-index:2;">
 
     </canvas>
   </div>
