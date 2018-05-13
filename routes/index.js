@@ -4,23 +4,28 @@ var fs = require('fs');
 var path = require('path');
 
 var linkUserdir = require('../tools.js').linkUserDir;
+var loadJSON = require('../tools.js').loadJSON;
 const dataDir = require('../tools.js').dataDir;
 const picDir = require('../tools.js').picDir;
-var config = require(path.join(dataDir, 'config.json'));
+var config;
 
 // template context for Handlebars
-substitute = {
-  title: 'NLabel',
-  dir: config.rootDir,
-  imgWidth: config.imageSize.width,
-  imgHeight: config.imageSize.height,
-  classes: config.classes
-}
+var substitute;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  config = require(path.join(dataDir, 'config.json'));
-  res.render('index', substitute);
+  loadJSON(path.join(dataDir, 'config.json'), (data) => {
+    config = JSON.parse(data);
+    substitute = {
+      title: 'NLabel',
+      dir: config.rootDir,
+      imgWidth: config.imageSize.width,
+      imgHeight: config.imageSize.height,
+      classes: config.classes
+    }
+    res.render('index', substitute);
+  });
+  
 });
 
 

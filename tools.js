@@ -122,6 +122,12 @@ function normalizeBox(item, ogSize, scaleSize) {
 }
 
 
+function loadJSON(filePath, callback){
+    fs.readFile(filePath, (err, data) => {
+        if(err) throw err;
+        callback(data);
+    });
+}
 exports.getSafeFileName = getSafeFileName;
 exports.json2csv = json2csv;
 exports.writeCSV = writeCSV;
@@ -130,6 +136,7 @@ exports.getImagesByDir = getImagesByDir;
 exports.linkUserDir = linkUserDir;
 exports.extnLessName = extnLessName;
 exports.normalizeBox = normalizeBox;
+exports.loadJSON = loadJSON;
 exports.dataDir = dataDir;
 exports.tempDir = tempDir;
 exports.outDir = outDir;

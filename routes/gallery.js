@@ -5,11 +5,12 @@ const Jimp = require('jimp');
 
 const picDir = require('../tools.js').picDir;
 const dataDir = require('../tools.js').dataDir;
-var config = require('../public/data/config.json');
+var config;
 var annotations = require('../public/data/annotations.json');
 const getImagesByDir = require('../tools.js').getImagesByDir;
 const extnLessName = require('../tools.js').extnLessName;
 const normalizeBox = require('../tools.js').normalizeBox;
+var loadJSON = require('../tools.js').loadJSON;
 
 
 var router = express.Router();
@@ -26,23 +27,28 @@ var substitute = {};
 /* GET images directory */
 
 router.get('/', (req, res, next) => {
-    config = require('../public/data/config.json');
-    annotations = require('../public/data/annotations.json');
-    imageList = getImagesByDir(picDir, (images) => {
-        imageList = images;
-        substitute = {
-            dir: config.rootDir,
-            canvas: {
-                width: config.imageSize.width,
-                height: config.imageSize.height
-                },
-            image: {},
-            classList: getClassList(config.classes),
-            currClass : config.classes[0],
-            currFileData: ""
-        }
-        res.redirect('/gallery/0');
+    loadJSON(path.join(dataDir, 'config.json'), (data) => {
+        config = JSON.parse(data);
+        loadJSON(path.join(dataDir, 'annotations.json'), (data) => {
+            annotations = JSON.parse(data);
+            imageList = getImagesByDir(picDir, (images) => {
+                imageList = images;
+                substitute = {
+                    dir: config.rootDir,
+                    canvas: {
+                        width: config.imageSize.width,
+                        height: config.imageSize.height
+                        },
+                    image: {},
+                    classList: getClassList(config.classes),
+                    currClass : config.classes[0],
+                    currFileData: ""
+                }
+                res.redirect('/gallery/0');
+            });
+        });
     });
+    
     
 });
 
