@@ -11,6 +11,7 @@ const getImagesByDir = require('../tools.js').getImagesByDir;
 const extnLessName = require('../tools.js').extnLessName;
 const normalizeBox = require('../tools.js').normalizeBox;
 var loadJSON = require('../tools.js').loadJSON;
+var scaleImage = require('../tools.js').scaleImage;
 
 
 var router = express.Router();
@@ -118,6 +119,7 @@ router.post('/save-all', (req, res, next) => {
             fs.writeFile(path.join(dataDir, 'annotations.json'), JSON.stringify(annotations, null, 4), (err) => {
                 if(err) console.log('E/save-all:', err.message);
             });
+            scaleImage(Jimp, path.join(picDir, data.filename), path.join(dataDir, 'scaled_pictures'), config.imageSize);
         }
 
         var dataFile = extnLessName(data.filename) + '.json';

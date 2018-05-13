@@ -128,6 +128,26 @@ function loadJSON(filePath, callback){
         callback(data);
     });
 }
+
+
+function scaleImage(Jimp, imagePath, saveDir, scale){
+    Jimp.read(imagePath, (err, image) => {
+        if(err) {
+            console.log('E/scaleImage:', err.message);
+        } else {
+            if(!fs.existsSync(path.join(saveDir, path.basename(imagePath))) 
+            || image.bitmap.width != scale.width 
+            || image.bitmap.height != scale.height) {
+                image.resize(scale.width, scale.height)
+                    .write(path.join(saveDir, path.basename(imagePath)));
+                console.log('I/scaleImage: saved scaled image');
+            }   
+        }
+    });
+     
+}
+
+
 exports.getSafeFileName = getSafeFileName;
 exports.json2csv = json2csv;
 exports.writeCSV = writeCSV;
@@ -137,6 +157,7 @@ exports.linkUserDir = linkUserDir;
 exports.extnLessName = extnLessName;
 exports.normalizeBox = normalizeBox;
 exports.loadJSON = loadJSON;
+exports.scaleImage = scaleImage;
 exports.dataDir = dataDir;
 exports.tempDir = tempDir;
 exports.outDir = outDir;
